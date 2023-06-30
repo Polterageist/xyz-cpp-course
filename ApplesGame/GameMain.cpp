@@ -9,7 +9,17 @@ const std::string RESOURCES_PATH = "Resources/";
 const float PLAYER_SIZE = 20.f;
 const float APPLE_SIZE = 20.f;
 const float INITIAL_SPEED = 100.f;
+const float ACCELERATION = 10.f; // For each eaten apple player speed will be increased by this value
 const int NUM_APPLES = 20;
+
+struct Player
+{
+	float x = 0.f;
+	float y = 0.f;
+	float speed = 0.f;
+	int direction = 0; // 0 - up, 1 - right, 2 - down, 3 - left
+	sf::RectangleShape shape;
+};
 
 struct Apple
 {
@@ -30,18 +40,18 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "AppleGame");
 
 	// Start in screen center
-	float playerX = (float)screenWidth / 2.f;
-	float playerY = (float)screenHeight / 2.f;
+	Player player;
+	player.x = (float)screenWidth / 2.f;
+	player.y = (float)screenHeight / 2.f;
 	
-	float playerSpeed = INITIAL_SPEED; // Pixels per second
-	float acceleration = 10.f; // For each eaten apple player speed will be increased by this value
-	int playerDirection = 0; // 0 - up, 1 - right, 2 - down, 3 - left
-
+	player.speed = INITIAL_SPEED; // Pixels per second
+	player.direction = 0;
+	
 	// Init player representation
-	sf::RectangleShape playerShape(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
-	playerShape.setFillColor(sf::Color::Green);
-	playerShape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
-	playerShape.setPosition(playerX, playerY);
+	player.shape.setSize(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
+	player.shape.setFillColor(sf::Color::Green);
+	player.shape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
+	player.shape.setPosition(player.x, player.y);
 
 	// Init apples
 	Apple apples[NUM_APPLES];
@@ -94,56 +104,56 @@ int main()
 		// Handle player input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			playerDirection = 0;
+			player.direction = 0;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			playerDirection = 1;
+			player.direction = 1;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			playerDirection = 2;
+			player.direction = 2;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			playerDirection = 3;
+			player.direction = 3;
 		}
 
 		// Move player
-		if (playerDirection == 0)
+		if (player.direction == 0)
 		{
-			playerY -= playerSpeed * timeDelta;
+			player.y -= player.speed * timeDelta;
 		}
-		else if (playerDirection == 1)
+		else if (player.direction == 1)
 		{
-			playerX += playerSpeed * timeDelta;
+			player.x += player.speed * timeDelta;
 		}
-		else if (playerDirection == 2)
+		else if (player.direction == 2)
 		{
-			playerY += playerSpeed * timeDelta;
+			player.y += player.speed * timeDelta;
 		}
-		else if (playerDirection == 3)
+		else if (player.direction == 3)
 		{
-			playerX -= playerSpeed * timeDelta;
+			player.x -= player.speed * timeDelta;
 		}
 
 		// Check collision with screen borders and determine if game should be restarted
 		bool shouldRestartGame = 
-			(playerX - PLAYER_SIZE / 2.f < 0) ||
-			(playerX + PLAYER_SIZE / 2.f > screenWidth) ||
-			(playerY - PLAYER_SIZE / 2.f < 0) ||
-			(playerY + PLAYER_SIZE / 2.f > screenHeight);
+			(player.x - PLAYER_SIZE / 2.f < 0) ||
+			(player.x + PLAYER_SIZE / 2.f > screenWidth) ||
+			(player.y - PLAYER_SIZE / 2.f < 0) ||
+			(player.y + PLAYER_SIZE / 2.f > screenHeight);
 		
 		// Restart game if needed
 		if (shouldRestartGame)
 		{
 			// Reset player position
-			playerX = (float)screenWidth / 2.f;
-			playerY = (float)screenHeight / 2.f;
-			playerShape.setPosition(playerX, playerY);
+			player.x = (float)screenWidth / 2.f;
+			player.y = (float)screenHeight / 2.f;
+			player.shape.setPosition(player.x, player.y);
 			// Reset player speed and direction
-			playerSpeed = INITIAL_SPEED;
-			playerDirection = 0;
+			player.speed = INITIAL_SPEED;
+			player.direction = 0;
 			// Reset eaten apples counter
 			numEatenApples = 0;
 
@@ -159,13 +169,13 @@ int main()
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
 			// Calculate distance between player and apple by each axis (if apples are squares)
-			/* float dx = fabs(playerX - AppleX[i]);
-			float dy = fabs(playerY - AppleY[i]);
+			/* float dx = fabs(player.x - AppleX[i]);
+			float dy = fabs(player.y - AppleY[i]);
 			if (dx < (PLAYER_SIZE + APPLE_SIZE) / 2.f &&
 				dy < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
 			{
 				// Increase player speed and eaten apples counter
-				playerSpeed += acceleration;
+				player.speed += acceleration;
 				numEatenApples++;
 
 				// Move apple to a new random position
@@ -174,13 +184,13 @@ int main()
 			} */
 
 			// Calculate distance between player and apple (if apples are circles)
-			float dx = playerX - apples[i].x;
-			float dy = playerY - apples[i].y;
+			float dx = player.x - apples[i].x;
+			float dy = player.y - apples[i].y;
 			float distance = sqrt(dx * dx + dy * dy);
 			if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
 			{
 				// Increase player speed and eaten apples counter
-				playerSpeed += acceleration;
+				player.speed += ACCELERATION;
 				numEatenApples++;
 
 				// Move apple to a new random position
@@ -200,8 +210,8 @@ int main()
 		window.clear();
 
 		// Then draw all the player
-		playerShape.setPosition(playerX, playerY);
-		window.draw(playerShape);
+		player.shape.setPosition(player.x, player.y);
+		window.draw(player.shape);
 
 		// Then draw all the apples
 		for (int i = 0; i < NUM_APPLES; i++)
