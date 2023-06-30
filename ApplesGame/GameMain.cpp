@@ -2,11 +2,21 @@
 // Authored by Aleksandr Rybalka (polterageist@gmail.com)
 
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
 
 const std::string RESOURCES_PATH = "Resources/";
 
+const float PLAYER_SIZE = 20.f;
+const float APPLE_SIZE = 20.f;
+const int NUM_APPLES = 20;
+
 int main()
 {
+	// Init random number generator
+	unsigned int seed = (unsigned int)time(nullptr); // Get current time as seed. You can also use any other number to fix randomization
+	srand(seed);
+
+	// Init window
 	unsigned int screenWidth = 800;
 	unsigned int screenHeight = 600;
 	sf::RenderWindow window(sf::VideoMode(screenWidth, screenHeight), "AppleGame");
@@ -14,19 +24,51 @@ int main()
 	// Start in screen center
 	float playerX = (float)screenWidth / 2.f;
 	float playerY = (float)screenHeight / 2.f;
-	float playerSize = 20.f;
+	
 	float playerSpeed = 100.f; // Pixels per second
 	int playerDirection = 0; // 0 - up, 1 - right, 2 - down, 3 - left
 
 	// Init player representation
-	sf::RectangleShape playerShape(sf::Vector2f(playerSize, playerSize));
+	sf::RectangleShape playerShape(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
 	playerShape.setFillColor(sf::Color::Green);
-	playerShape.setOrigin(playerSize / 2.f, playerSize / 2.f);
+	playerShape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
 	playerShape.setPosition(playerX, playerY);
+
+	// Init apples
+	float AppleX[NUM_APPLES];
+	float AppleY[NUM_APPLES];
+	bool AppleEaten[NUM_APPLES];
+	for (int i = 0; i < NUM_APPLES; i++)
+	{
+		AppleX[i] = (float)(rand() % screenWidth);
+		AppleY[i] = (float)(rand() % screenHeight);
+		AppleEaten[i] = false;
+	}
+
+	// Init apples representation (as squares)
+	/* sf::RectangleShape appleShapes[NUM_APPLES];
+	for (int i = 0; i < NUM_APPLES; i++)
+	{
+		appleShapes[i].setSize(sf::Vector2f(APPLE_SIZE, APPLE_SIZE));
+		appleShapes[i].setFillColor(sf::Color::Red);
+		appleShapes[i].setOrigin(APPLE_SIZE / 2.f, APPLE_SIZE / 2.f);
+		appleShapes[i].setPosition(AppleX[i], AppleY[i]);
+	} */
+	sf::CircleShape appleShapes[NUM_APPLES];
+	for (int i = 0; i < NUM_APPLES; i++)
+	{
+		appleShapes[i].setRadius(APPLE_SIZE / 2.f);
+		appleShapes[i].setFillColor(sf::Color::Red);
+		appleShapes[i].setOrigin(APPLE_SIZE / 2.f, APPLE_SIZE / 2.f);
+		appleShapes[i].setPosition(AppleX[i], AppleY[i]);
+	}
 
 	// Init game clock
 	sf::Clock game_clock;
 	sf::Time lastTime = game_clock.getElapsedTime();
+
+	// Init eaten apples counter
+	int numEatenApples = 0;
 
 	// Game loop
 	while (window.isOpen())
@@ -89,28 +131,76 @@ int main()
 		}
 
 		// Check collision with screen borders
-		if (playerX < 0)
+		if (playerX - PLAYER_SIZE / 2.f < 0)
 		{
 			break;
 		}
-		else if (playerX > screenWidth)
+		else if (playerX + PLAYER_SIZE / 2.f > screenWidth)
 		{
 			break;
 		}
 		
-		if (playerY < 0)
+		if (playerY - PLAYER_SIZE / 2.f < 0)
 		{
 			break;
 		}
-		else if (playerY > screenHeight)
+		else if (playerY + PLAYER_SIZE / 2.f > screenHeight)
+		{
+			break;
+		}
+
+		// Check collision with apples
+		for (int i = 0; i < NUM_APPLES; i++)
+		{
+			if (!AppleEaten[i])
+			{
+				// Calculate distance between player and apple by each axis (if apples are squares)
+				/* float dx = fabs(playerX - AppleX[i]);
+				float dy = fabs(playerY - AppleY[i]);
+				if (dx < (PLAYER_SIZE + APPLE_SIZE) / 2.f &&
+					dy < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
+				{
+					AppleEaten[i] = true;
+					numEatenApples++;
+				} */
+
+				// Calculate distance between player and apple (if apples are circles)
+				float dx = playerX - AppleX[i];
+				float dy = playerY - AppleY[i];
+				float distance = sqrt(dx * dx + dy * dy);
+				if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
+				{
+					AppleEaten[i] = true;
+					numEatenApples++;
+				}
+			}
+		}
+
+		// Check if all apples are eaten (win condition)
+		if (numEatenApples == NUM_APPLES)
 		{
 			break;
 		}
 
 		// Draw everything here
+		// Clear the window first
 		window.clear();
+
+		// Then draw all the player
 		playerShape.setPosition(playerX, playerY);
 		window.draw(playerShape);
+
+		// Then draw all the apples
+		for (int i = 0; i < NUM_APPLES; i++)
+		{
+			if (!AppleEaten[i])
+			{
+				appleShapes[i].setPosition(AppleX[i], AppleY[i]);
+				window.draw(appleShapes[i]);
+			}
+		}
+
+		// End the current frame, display window contents on screen
 		window.display();
 	}
 
