@@ -8,6 +8,7 @@ const std::string RESOURCES_PATH = "Resources/";
 
 const float PLAYER_SIZE = 20.f;
 const float APPLE_SIZE = 20.f;
+const float INITIAL_SPEED = 100.f;
 const int NUM_APPLES = 20;
 
 int main()
@@ -25,7 +26,7 @@ int main()
 	float playerX = (float)screenWidth / 2.f;
 	float playerY = (float)screenHeight / 2.f;
 	
-	float playerSpeed = 100.f; // Pixels per second
+	float playerSpeed = INITIAL_SPEED; // Pixels per second
 	float acceleration = 10.f; // For each eaten apple player speed will be increased by this value
 	int playerDirection = 0; // 0 - up, 1 - right, 2 - down, 3 - left
 
@@ -129,23 +130,32 @@ int main()
 			playerX -= playerSpeed * timeDelta;
 		}
 
-		// Check collision with screen borders
-		if (playerX - PLAYER_SIZE / 2.f < 0)
-		{
-			break;
-		}
-		else if (playerX + PLAYER_SIZE / 2.f > screenWidth)
-		{
-			break;
-		}
+		// Check collision with screen borders and determine if game should be restarted
+		bool shouldRestartGame = 
+			(playerX - PLAYER_SIZE / 2.f < 0) ||
+			(playerX + PLAYER_SIZE / 2.f > screenWidth) ||
+			(playerY - PLAYER_SIZE / 2.f < 0) ||
+			(playerY + PLAYER_SIZE / 2.f > screenHeight);
 		
-		if (playerY - PLAYER_SIZE / 2.f < 0)
+		// Restart game if needed
+		if (shouldRestartGame)
 		{
-			break;
-		}
-		else if (playerY + PLAYER_SIZE / 2.f > screenHeight)
-		{
-			break;
+			// Reset player position
+			playerX = (float)screenWidth / 2.f;
+			playerY = (float)screenHeight / 2.f;
+			playerShape.setPosition(playerX, playerY);
+			// Reset player speed and direction
+			playerSpeed = INITIAL_SPEED;
+			playerDirection = 0;
+			// Reset eaten apples counter
+			numEatenApples = 0;
+
+			// Move apples to a new random positions
+			for (int i = 0; i < NUM_APPLES; i++)
+			{
+				AppleX[i] = (float)(rand() % screenWidth);
+				AppleY[i] = (float)(rand() % screenHeight);
+			}
 		}
 
 		// Check collision with apples
