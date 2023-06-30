@@ -13,6 +13,12 @@ const float ACCELERATION = 10.f; // For each eaten apple player speed will be in
 const int NUM_APPLES = 20;
 
 
+struct Position
+{
+	float x = 0.f;
+	float y = 0.f;
+};
+
 enum class PlayerDirection
 {
 	Up = 0,
@@ -23,8 +29,7 @@ enum class PlayerDirection
 
 struct Player
 {
-	float x = 0.f;
-	float y = 0.f;
+	Position position;
 	float speed = 0.f; // Pixels per second
 	PlayerDirection direction = PlayerDirection::Up;
 	sf::RectangleShape shape;
@@ -32,8 +37,7 @@ struct Player
 
 struct Apple
 {
-	float x = 0.f;
-	float y = 0.f;
+	Position position;
 	sf::CircleShape shape;
 };
 
