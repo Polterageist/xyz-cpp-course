@@ -13,11 +13,14 @@ const float ACCELERATION = 10.f; // For each eaten apple player speed will be in
 const int NUM_APPLES = 20;
 
 
-struct Position
+struct Vector2D
 {
 	float x = 0.f;
 	float y = 0.f;
 };
+
+// usin Position = Vector2D;
+typedef Vector2D Position;
 
 enum class PlayerDirection
 {
@@ -54,8 +57,8 @@ int main()
 
 	// Start in screen center
 	Player player;
-	player.x = (float)screenWidth / 2.f;
-	player.y = (float)screenHeight / 2.f;
+	player.position.x = (float)screenWidth / 2.f;
+	player.position.y = (float)screenHeight / 2.f;
 	
 	player.speed = INITIAL_SPEED;
 	player.direction = PlayerDirection::Up;
@@ -64,14 +67,14 @@ int main()
 	player.shape.setSize(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
 	player.shape.setFillColor(sf::Color::Green);
 	player.shape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
-	player.shape.setPosition(player.x, player.y);
+	player.shape.setPosition(player.position.x, player.position.y);
 
 	// Init apples
 	Apple apples[NUM_APPLES];
 	for (int i = 0; i < NUM_APPLES; i++)
 	{
-		apples[i].x = (float)(rand() % screenWidth);
-		apples[i].y = (float)(rand() % screenHeight);
+		apples[i].position.x = (float)(rand() % screenWidth);
+		apples[i].position.y = (float)(rand() % screenHeight);
 	}
 
 	// Init apples representation (as circles)
@@ -80,7 +83,7 @@ int main()
 		apples[i].shape.setRadius(APPLE_SIZE / 2.f);
 		apples[i].shape.setFillColor(sf::Color::Red);
 		apples[i].shape.setOrigin(APPLE_SIZE / 2.f, APPLE_SIZE / 2.f);
-		apples[i].shape.setPosition(apples[i].x, apples[i].y);
+		apples[i].shape.setPosition(apples[i].position.x, apples[i].position.y);
 	}
 
 	// Init game clock
@@ -135,35 +138,35 @@ int main()
 		// Move player
 		if (player.direction == PlayerDirection::Up)
 		{
-			player.y -= player.speed * timeDelta;
+			player.position.y -= player.speed * timeDelta;
 		}
 		else if (player.direction == PlayerDirection::Right)
 		{
-			player.x += player.speed * timeDelta;
+			player.position.x += player.speed * timeDelta;
 		}
 		else if (player.direction == PlayerDirection::Down)
 		{
-			player.y += player.speed * timeDelta;
+			player.position.y += player.speed * timeDelta;
 		}
 		else if (player.direction == PlayerDirection::Left)
 		{
-			player.x -= player.speed * timeDelta;
+			player.position.x -= player.speed * timeDelta;
 		}
 
 		// Check collision with screen borders and determine if game should be restarted
 		bool shouldRestartGame = 
-			(player.x - PLAYER_SIZE / 2.f < 0) ||
-			(player.x + PLAYER_SIZE / 2.f > screenWidth) ||
-			(player.y - PLAYER_SIZE / 2.f < 0) ||
-			(player.y + PLAYER_SIZE / 2.f > screenHeight);
+			(player.position.x - PLAYER_SIZE / 2.f < 0) ||
+			(player.position.x + PLAYER_SIZE / 2.f > screenWidth) ||
+			(player.position.y - PLAYER_SIZE / 2.f < 0) ||
+			(player.position.y + PLAYER_SIZE / 2.f > screenHeight);
 		
 		// Restart game if needed
 		if (shouldRestartGame)
 		{
 			// Reset player position
-			player.x = (float)screenWidth / 2.f;
-			player.y = (float)screenHeight / 2.f;
-			player.shape.setPosition(player.x, player.y);
+			player.position.x = (float)screenWidth / 2.f;
+			player.position.y = (float)screenHeight / 2.f;
+			player.shape.setPosition(player.position.x, player.position.y);
 			// Reset player speed and direction
 			player.speed = INITIAL_SPEED;
 			player.direction = PlayerDirection::Up;
@@ -173,8 +176,8 @@ int main()
 			// Move apples to a new random positions
 			for (int i = 0; i < NUM_APPLES; i++)
 			{
-				apples[i].x = (float)(rand() % screenWidth);
-				apples[i].y = (float)(rand() % screenHeight);
+				apples[i].position.x = (float)(rand() % screenWidth);
+				apples[i].position.y = (float)(rand() % screenHeight);
 			}
 		}
 
@@ -182,8 +185,8 @@ int main()
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
 			// Calculate distance between player and apple by each axis (if apples are squares)
-			/* float dx = fabs(player.x - AppleX[i]);
-			float dy = fabs(player.y - AppleY[i]);
+			/* float dx = fabs(player.position.x - AppleX[i]);
+			float dy = fabs(player.position.y - AppleY[i]);
 			if (dx < (PLAYER_SIZE + APPLE_SIZE) / 2.f &&
 				dy < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
 			{
@@ -197,8 +200,8 @@ int main()
 			} */
 
 			// Calculate distance between player and apple (if apples are circles)
-			float dx = player.x - apples[i].x;
-			float dy = player.y - apples[i].y;
+			float dx = player.position.x - apples[i].position.x;
+			float dy = player.position.y - apples[i].position.y;
 			float distance = sqrt(dx * dx + dy * dy);
 			if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
 			{
@@ -207,8 +210,8 @@ int main()
 				numEatenApples++;
 
 				// Move apple to a new random position
-				apples[i].x = (float)(rand() % screenWidth);
-				apples[i].y = (float)(rand() % screenHeight);
+				apples[i].position.x = (float)(rand() % screenWidth);
+				apples[i].position.y = (float)(rand() % screenHeight);
 			}
 		}
 
@@ -223,13 +226,13 @@ int main()
 		window.clear();
 
 		// Then draw all the player
-		player.shape.setPosition(player.x, player.y);
+		player.shape.setPosition(player.position.x, player.position.y);
 		window.draw(player.shape);
 
 		// Then draw all the apples
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
-			apples[i].shape.setPosition(apples[i].x, apples[i].y);
+			apples[i].shape.setPosition(apples[i].position.x, apples[i].position.y);
 			window.draw(apples[i].shape);
 		}
 
