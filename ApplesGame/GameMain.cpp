@@ -26,6 +26,7 @@ int main()
 	float playerY = (float)screenHeight / 2.f;
 	
 	float playerSpeed = 100.f; // Pixels per second
+	float acceleration = 10.f; // For each eaten apple player speed will be increased by this value
 	int playerDirection = 0; // 0 - up, 1 - right, 2 - down, 3 - left
 
 	// Init player representation
@@ -37,12 +38,10 @@ int main()
 	// Init apples
 	float AppleX[NUM_APPLES];
 	float AppleY[NUM_APPLES];
-	bool AppleEaten[NUM_APPLES];
 	for (int i = 0; i < NUM_APPLES; i++)
 	{
 		AppleX[i] = (float)(rand() % screenWidth);
 		AppleY[i] = (float)(rand() % screenHeight);
-		AppleEaten[i] = false;
 	}
 
 	// Init apples representation (as squares)
@@ -152,35 +151,42 @@ int main()
 		// Check collision with apples
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
-			if (!AppleEaten[i])
+			// Calculate distance between player and apple by each axis (if apples are squares)
+			/* float dx = fabs(playerX - AppleX[i]);
+			float dy = fabs(playerY - AppleY[i]);
+			if (dx < (PLAYER_SIZE + APPLE_SIZE) / 2.f &&
+				dy < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
 			{
-				// Calculate distance between player and apple by each axis (if apples are squares)
-				/* float dx = fabs(playerX - AppleX[i]);
-				float dy = fabs(playerY - AppleY[i]);
-				if (dx < (PLAYER_SIZE + APPLE_SIZE) / 2.f &&
-					dy < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
-				{
-					AppleEaten[i] = true;
-					numEatenApples++;
-				} */
+				// Increase player speed and eaten apples counter
+				playerSpeed += acceleration;
+				numEatenApples++;
 
-				// Calculate distance between player and apple (if apples are circles)
-				float dx = playerX - AppleX[i];
-				float dy = playerY - AppleY[i];
-				float distance = sqrt(dx * dx + dy * dy);
-				if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
-				{
-					AppleEaten[i] = true;
-					numEatenApples++;
-				}
+				// Move apple to a new random position
+				AppleX[i] = (float)(rand() % screenWidth);
+				AppleY[i] = (float)(rand() % screenHeight);
+			} */
+
+			// Calculate distance between player and apple (if apples are circles)
+			float dx = playerX - AppleX[i];
+			float dy = playerY - AppleY[i];
+			float distance = sqrt(dx * dx + dy * dy);
+			if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f)
+			{
+				// Increase player speed and eaten apples counter
+				playerSpeed += acceleration;
+				numEatenApples++;
+
+				// Move apple to a new random position
+				AppleX[i] = (float)(rand() % screenWidth);
+				AppleY[i] = (float)(rand() % screenHeight);
 			}
 		}
 
-		// Check if all apples are eaten (win condition)
-		if (numEatenApples == NUM_APPLES)
-		{
-			break;
-		}
+		//// Check if all apples are eaten (win condition)
+		//if (numEatenApples == NUM_APPLES)
+		//{
+		//	break;
+		//}
 
 		// Draw everything here
 		// Clear the window first
@@ -193,11 +199,8 @@ int main()
 		// Then draw all the apples
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
-			if (!AppleEaten[i])
-			{
-				appleShapes[i].setPosition(AppleX[i], AppleY[i]);
-				window.draw(appleShapes[i]);
-			}
+			appleShapes[i].setPosition(AppleX[i], AppleY[i]);
+			window.draw(appleShapes[i]);
 		}
 
 		// End the current frame, display window contents on screen
