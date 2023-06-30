@@ -12,12 +12,21 @@ const float INITIAL_SPEED = 100.f;
 const float ACCELERATION = 10.f; // For each eaten apple player speed will be increased by this value
 const int NUM_APPLES = 20;
 
+
+enum class PlayerDirection
+{
+	Up = 0,
+	Right,
+	Down,
+	Left
+};
+
 struct Player
 {
 	float x = 0.f;
 	float y = 0.f;
-	float speed = 0.f;
-	int direction = 0; // 0 - up, 1 - right, 2 - down, 3 - left
+	float speed = 0.f; // Pixels per second
+	PlayerDirection direction = PlayerDirection::Up;
 	sf::RectangleShape shape;
 };
 
@@ -44,8 +53,8 @@ int main()
 	player.x = (float)screenWidth / 2.f;
 	player.y = (float)screenHeight / 2.f;
 	
-	player.speed = INITIAL_SPEED; // Pixels per second
-	player.direction = 0;
+	player.speed = INITIAL_SPEED;
+	player.direction = PlayerDirection::Up;
 	
 	// Init player representation
 	player.shape.setSize(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
@@ -104,35 +113,35 @@ int main()
 		// Handle player input
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			player.direction = 0;
+			player.direction = PlayerDirection::Up;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
-			player.direction = 1;
+			player.direction = PlayerDirection::Right;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			player.direction = 2;
+			player.direction = PlayerDirection::Down;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
-			player.direction = 3;
+			player.direction = PlayerDirection::Left;
 		}
 
 		// Move player
-		if (player.direction == 0)
+		if (player.direction == PlayerDirection::Up)
 		{
 			player.y -= player.speed * timeDelta;
 		}
-		else if (player.direction == 1)
+		else if (player.direction == PlayerDirection::Right)
 		{
 			player.x += player.speed * timeDelta;
 		}
-		else if (player.direction == 2)
+		else if (player.direction == PlayerDirection::Down)
 		{
 			player.y += player.speed * timeDelta;
 		}
-		else if (player.direction == 3)
+		else if (player.direction == PlayerDirection::Left)
 		{
 			player.x -= player.speed * timeDelta;
 		}
@@ -153,7 +162,7 @@ int main()
 			player.shape.setPosition(player.x, player.y);
 			// Reset player speed and direction
 			player.speed = INITIAL_SPEED;
-			player.direction = 0;
+			player.direction = PlayerDirection::Up;
 			// Reset eaten apples counter
 			numEatenApples = 0;
 
