@@ -13,6 +13,9 @@ namespace ApplesGame
 		Apple apples[NUM_APPLES];
 		int numEatenApples = 0;
 		bool isGameOver = false;
+
+		// Game resources
+		sf::Font font;
 	};
 
 	void InitGame(GameState& gameState);

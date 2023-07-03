@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <assert.h>
 
 namespace ApplesGame
 {
@@ -15,6 +16,10 @@ namespace ApplesGame
 		// Init game state
 		gameState.numEatenApples = 0;
 		gameState.isGameOver = false;
+
+		// Init game resources
+		bool isFontLoaded = gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf");
+		assert(isFontLoaded); // Terminate with breakpoint if font is not loaded
 	}
 
 	void HandleInput(GameState& gameState)
@@ -73,5 +78,13 @@ namespace ApplesGame
 		{
 			window.draw(gameState.apples[i].shape);
 		}
+
+		sf::Text scoresText;
+		scoresText.setFont(gameState.font);
+		scoresText.setString("Apples eaten: " + std::to_string(gameState.numEatenApples));
+		scoresText.setCharacterSize(24);
+		scoresText.setFillColor(sf::Color::Yellow);
+		scoresText.setPosition(10.f, 10.f);
+		window.draw(scoresText);
 	}
 }
