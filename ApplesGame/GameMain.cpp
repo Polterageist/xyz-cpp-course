@@ -22,6 +22,11 @@ struct Vector2D
 	float y = 0.f;
 };
 
+sf::Vector2f OurVectorToSf(const Vector2D& v)
+{
+	return sf::Vector2f(v.x, v.y);
+}
+
 // usin Position = Vector2D;
 typedef Vector2D Position;
 
@@ -84,7 +89,7 @@ void InitPlayer(Player& player)
 	player.shape.setSize(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
 	player.shape.setFillColor(sf::Color::Green);
 	player.shape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
-	player.shape.setPosition(player.position.x, player.position.y);
+	player.shape.setPosition(OurVectorToSf(player.position));
 }
 
 void InitApple(Apple& apple)
@@ -97,7 +102,7 @@ void InitApple(Apple& apple)
 	apple.shape.setRadius(APPLE_SIZE / 2.f);
 	apple.shape.setFillColor(sf::Color::Red);
 	apple.shape.setOrigin(APPLE_SIZE / 2.f, APPLE_SIZE / 2.f);
-	apple.shape.setPosition(apple.position.x, apple.position.y);
+	apple.shape.setPosition(OurVectorToSf(apple.position));
 }
 
 void InitGame(GameState& gameState)
@@ -154,6 +159,8 @@ void UpdatePlayer(Player& player, float timeDelta)
 	{
 		player.position.x -= player.speed * timeDelta;
 	}
+
+	player.shape.setPosition(OurVectorToSf(player.position));
 }
 
 bool HasPlayerCollisionWithScreenBorder(const Player& player)
