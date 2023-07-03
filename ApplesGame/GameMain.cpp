@@ -230,18 +230,19 @@ int main()
 	// Game loop
 	while (window.isOpen())
 	{
-		// Calculate time delta
-		sf::Time currentTime = game_clock.getElapsedTime();
-		float timeDelta = currentTime.asSeconds() - lastTime.asSeconds();
-		lastTime = currentTime;
-
 		HandleWindowEvents(window);
+
 		if (!window.isOpen())
 		{
 			return 0;
 		}
 
 		HandleInput(gameState);
+
+		// Calculate time delta
+		sf::Time currentTime = game_clock.getElapsedTime();
+		float timeDelta = currentTime.asSeconds() - lastTime.asSeconds();
+		lastTime = currentTime;
 		UpdateGame(gameState, timeDelta);
 
 		// Draw everything here
