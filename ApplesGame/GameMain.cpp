@@ -6,6 +6,7 @@
 
 #include "Game.h"
 
+using namespace ApplesGame;
 
 void HandleWindowEvents(sf::RenderWindow& window)
 {
@@ -33,7 +34,7 @@ int main()
 	// Init window
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEGHT), "AppleGame");
 
-	GameState gameState;
+	ApplesGame::GameState gameState;
 	InitGame(gameState);
 
 	// Init game clock
