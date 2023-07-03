@@ -166,10 +166,10 @@ bool HasPlayerCollisionWithScreenBorder(const Player& player)
 
 bool HasPlayerCollisionWithApple(const Player& player, const Apple& apple)
 {
-	float dx = player.position.x - apples[i].position.x;
-	float dy = player.position.y - apples[i].position.y;
+	float dx = player.position.x - apple.position.x;
+	float dy = player.position.y - apple.position.y;
 	float distance = sqrt(dx * dx + dy * dy);
-	return distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f
+	return distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f;
 }
 
 void UpdateGame(GameState& gameState, float timeDelta)
@@ -220,7 +220,7 @@ int main()
 	// Init window
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEGHT), "AppleGame");
 
-	GameState& gameState = gameState;
+	GameState gameState;
 	InitGame(gameState);
 
 	// Init game clock
@@ -241,8 +241,8 @@ int main()
 			return 0;
 		}
 
-		HandleInput(player);
-		UpdateGame(gameState);
+		HandleInput(gameState);
+		UpdateGame(gameState, timeDelta);
 
 		// Draw everything here
 		// Clear the window first
