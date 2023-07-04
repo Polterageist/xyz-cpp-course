@@ -33,4 +33,6 @@ To not introduce something unnedded in branch consider following order of mergin
 template -> apples_game (module 1 project) -> ... -> main
 Do not merge it in other direction. It is important to maintain clear structure of the repository for students.
 
-
+# Used resources
+Pacman icon https://www.pngplay.com/image/155212
+Apple icon https://icon-icons.com/icon/Apple-fruit/82499
