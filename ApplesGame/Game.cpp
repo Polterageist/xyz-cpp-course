@@ -1,25 +1,27 @@
 #include "Game.h"
 #include <assert.h>
 
+
 namespace ApplesGame
 {
 	void InitGame(GameState& gameState)
 	{
+		// Init game resources (terminate if error)
+		assert(gameState.playerTexture.loadFromFile(RESOURCES_PATH + "Pacman.png"));
+		assert(gameState.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
+		assert(gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
+
 		// Init player
-		InitPlayer(gameState.player);
+		InitPlayer(gameState.player, gameState.playerTexture);
 		// Init apples
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
-			InitApple(gameState.apples[i]);
+			InitApple(gameState.apples[i], gameState.appleTexture);
 		}
 
 		// Init game state
 		gameState.numEatenApples = 0;
 		gameState.isGameOver = false;
-
-		// Init game resources
-		bool isFontLoaded = gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf");
-		assert(isFontLoaded); // Terminate with breakpoint if font is not loaded
 	}
 
 	void HandleInput(GameState& gameState)
@@ -60,7 +62,7 @@ namespace ApplesGame
 			if (HasPlayerCollisionWithApple(gameState.player, gameState.apples[i]))
 			{
 				// Move apple to a new random position
-				InitApple(gameState.apples[i]);
+				InitApple(gameState.apples[i], gameState.appleTexture);
 				// Increase eaten apples counter
 				gameState.numEatenApples++;
 				// Increase player speed
@@ -72,11 +74,11 @@ namespace ApplesGame
 	void DrawGame(GameState& gameState, sf::RenderWindow& window)
 	{
 		// Draw player
-		window.draw(gameState.player.shape);
+		DrawPlayer(gameState.player, window);
 		// Draw apples
 		for (int i = 0; i < NUM_APPLES; i++)
 		{
-			window.draw(gameState.apples[i].shape);
+			DrawApple(gameState.apples[i], window);
 		}
 
 		sf::Text scoresText;

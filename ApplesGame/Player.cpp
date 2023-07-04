@@ -1,10 +1,12 @@
 #include "Player.h"
+#include <assert.h>
 #include "GameSettings.h"
 #include "Apple.h"
 
+
 namespace ApplesGame
 {
-	void InitPlayer(Player& player)
+	void InitPlayer(Player& player, const sf::Texture& texture)
 	{
 		// Init player state
 		player.position.x = (float)SCREEN_WIDTH / 2.f;
@@ -12,34 +14,38 @@ namespace ApplesGame
 		player.speed = INITIAL_SPEED;
 		player.direction = PlayerDirection::Up;
 
-		// Init player representation
-		player.shape.setSize(sf::Vector2f(PLAYER_SIZE, PLAYER_SIZE));
-		player.shape.setFillColor(sf::Color::Green);
-		player.shape.setOrigin(PLAYER_SIZE / 2.f, PLAYER_SIZE / 2.f);
-		player.shape.setPosition(OurVectorToSf(player.position));
+		// Init sprite
+		player.sprite.setTexture(texture);
+		player.sprite.setOrigin(GetSpriteOrigin(player.sprite, {0.5f, 0.5f})); // We need to use texture as origin ignores scale
+		player.sprite.setScale(GetSpriteScale(player.sprite, {PLAYER_SIZE, PLAYER_SIZE}));
 	}
 
 	void UpdatePlayer(Player& player, float timeDelta)
 	{
 		// Move player
-		if (player.direction == PlayerDirection::Up)
+		switch (player.direction)
 		{
-			player.position.y -= player.speed * timeDelta;
+			case PlayerDirection::Up:
+			{
+				player.position.y -= player.speed * timeDelta;
+				break;
+			}
+			case PlayerDirection::Right:
+			{
+				player.position.x += player.speed * timeDelta;
+				break;
+			}
+			case PlayerDirection::Down:
+			{
+				player.position.y += player.speed * timeDelta;
+				break;
+			}
+			case PlayerDirection::Left:
+			{
+				player.position.x -= player.speed * timeDelta;
+				break;
+			}
 		}
-		else if (player.direction == PlayerDirection::Right)
-		{
-			player.position.x += player.speed * timeDelta;
-		}
-		else if (player.direction == PlayerDirection::Down)
-		{
-			player.position.y += player.speed * timeDelta;
-		}
-		else if (player.direction == PlayerDirection::Left)
-		{
-			player.position.x -= player.speed * timeDelta;
-		}
-
-		player.shape.setPosition(OurVectorToSf(player.position));
 	}
 
 	bool HasPlayerCollisionWithScreenBorder(const Player& player)
@@ -56,5 +62,43 @@ namespace ApplesGame
 		float dy = player.position.y - apple.position.y;
 		float distance = sqrt(dx * dx + dy * dy);
 		return distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f;
+	}
+
+	void DrawPlayer(Player& player, sf::RenderWindow& window)
+	{
+		player.sprite.setPosition(OurVectorToSf(player.position));
+
+		const sf::Vector2f spriteScale = (GetSpriteScale(player.sprite, { PLAYER_SIZE, PLAYER_SIZE }));
+
+		// We need to rotate and flip sprite to match player direction
+		switch (player.direction)
+		{
+			case PlayerDirection::Up:
+			{
+				player.sprite.setScale(spriteScale.x, spriteScale.y);
+				player.sprite.setRotation(-90.f);
+				break;
+			}
+			case PlayerDirection::Right:
+			{
+				player.sprite.setScale(spriteScale.x, spriteScale.y);
+				player.sprite.setRotation(0.f);
+				break;
+			}
+			case PlayerDirection::Down:
+			{
+				player.sprite.setScale(spriteScale.x, spriteScale.y);
+				player.sprite.setRotation(90.f);
+				break;
+			}
+			case PlayerDirection::Left:
+			{
+				player.sprite.setScale(-spriteScale.x, spriteScale.y);
+				player.sprite.setRotation(0.f);
+				break;
+			}
+		}
+
+		window.draw(player.sprite);
 	}
 }

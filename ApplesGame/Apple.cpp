@@ -5,16 +5,22 @@
 
 namespace ApplesGame
 {
-	void InitApple(Apple& apple)
+	void InitApple(Apple& apple, const sf::Texture& texture)
 	{
 		// init apple state
 		apple.position.x = (float)(rand() % SCREEN_WIDTH);
 		apple.position.y = (float)(rand() % SCREEN_HEGHT);
 
-		// Init apple representation
-		apple.shape.setRadius(APPLE_SIZE / 2.f);
-		apple.shape.setFillColor(sf::Color::Red);
-		apple.shape.setOrigin(APPLE_SIZE / 2.f, APPLE_SIZE / 2.f);
-		apple.shape.setPosition(OurVectorToSf(apple.position));
+		// Init sprite
+		apple.sprite.setTexture(texture);
+		apple.sprite.setOrigin(GetSpriteOrigin(apple.sprite, { 0.5f, 0.5f })); // We need to use texture as origin ignores scale
+		apple.sprite.setScale(GetSpriteScale(apple.sprite, { APPLE_SIZE, APPLE_SIZE }));
 	}
+
+	void DrawApple(Apple& apple, sf::RenderWindow& window)
+	{
+		apple.sprite.setPosition(OurVectorToSf(apple.position));
+		window.draw(apple.sprite);
+	}
+
 }
