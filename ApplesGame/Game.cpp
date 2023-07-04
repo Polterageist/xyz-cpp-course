@@ -11,6 +11,12 @@ namespace ApplesGame
 		assert(gameState.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
 		assert(gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
 
+		InitUI(gameState.uiState, gameState.font);
+		RestartGame(gameState);
+	}
+
+	void RestartGame(GameState& gameState)
+	{
 		// Init player
 		InitPlayer(gameState.player, gameState.playerTexture);
 		// Init apples
@@ -22,10 +28,22 @@ namespace ApplesGame
 		// Init game state
 		gameState.numEatenApples = 0;
 		gameState.isGameOver = false;
+		gameState.timeSinceGameOver = 0.f;
 	}
 
 	void HandleInput(GameState& gameState)
 	{
+		if (gameState.isGameOver)
+		{
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				RestartGame(gameState);
+			}
+
+			// We don't handle input in game over state
+			return;
+		}
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			gameState.player.direction = PlayerDirection::Up;
@@ -46,29 +64,38 @@ namespace ApplesGame
 
 	void UpdateGame(GameState& gameState, float timeDelta)
 	{
-		// Update player
-		UpdatePlayer(gameState.player, timeDelta);
-
-		// Check collision with screen border
-		if (HasPlayerCollisionWithScreenBorder(gameState.player))
+		if (!gameState.isGameOver)
 		{
-			gameState.isGameOver = true;
-			return;
-		}
+			// Update player
+			UpdatePlayer(gameState.player, timeDelta);
 
-		for (int i = 0; i < NUM_APPLES; i++)
-		{
-			// Check collision with apple
-			if (HasPlayerCollisionWithApple(gameState.player, gameState.apples[i]))
+			for (int i = 0; i < NUM_APPLES; i++)
 			{
-				// Move apple to a new random position
-				InitApple(gameState.apples[i], gameState.appleTexture);
-				// Increase eaten apples counter
-				gameState.numEatenApples++;
-				// Increase player speed
-				gameState.player.speed += ACCELERATION;
+				// Check collision with apple
+				if (HasPlayerCollisionWithApple(gameState.player, gameState.apples[i]))
+				{
+					// Move apple to a new random position
+					InitApple(gameState.apples[i], gameState.appleTexture);
+					// Increase eaten apples counter
+					gameState.numEatenApples++;
+					// Increase player speed
+					gameState.player.speed += ACCELERATION;
+				}
+			}
+
+			// Check collision with screen border
+			if (HasPlayerCollisionWithScreenBorder(gameState.player))
+			{
+				gameState.isGameOver = true;
+				gameState.timeSinceGameOver = 0.f;
 			}
 		}
+		else
+		{
+			gameState.timeSinceGameOver += timeDelta;
+		}
+
+		UpdateUI(gameState.uiState, gameState, timeDelta);
 	}
 
 	void DrawGame(GameState& gameState, sf::RenderWindow& window)
@@ -81,12 +108,6 @@ namespace ApplesGame
 			DrawApple(gameState.apples[i], window);
 		}
 
-		sf::Text scoresText;
-		scoresText.setFont(gameState.font);
-		scoresText.setString("Apples eaten: " + std::to_string(gameState.numEatenApples));
-		scoresText.setCharacterSize(24);
-		scoresText.setFillColor(sf::Color::Yellow);
-		scoresText.setPosition(10.f, 10.f);
-		window.draw(scoresText);
+		DrawUI(gameState.uiState, window);
 	}
 }

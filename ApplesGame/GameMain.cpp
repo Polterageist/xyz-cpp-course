@@ -67,12 +67,6 @@ int main()
 
 		// End the current frame, display window contents on screen
 		window.display();
-
-		if (gameState.isGameOver)
-		{
-			// Here we restart the game
-			InitGame(gameState);
-		}
 	}
 
 	return 0;

@@ -20,4 +20,13 @@ namespace ApplesGame
 		return { relativePosition.x * textureSize.x, relativePosition.y * textureSize.y };
 	}
 
+	sf::Vector2f GetTextOrigin(const sf::Text& text, const Vector2D& relativePosition)
+	{
+		sf::FloatRect textSize = text.getLocalBounds();
+		return {
+			(textSize.left + textSize.width) * relativePosition.x,
+			(textSize.top + textSize.height) * relativePosition.y,
+		};
+	}
+
 }
