@@ -45,10 +45,30 @@ int main()
     float celsius = (farenheits - 32) * 5 / 9;
     std::cout << "Temperature in celsius: " << celsius << "\n";
 
+    // WIll work bad
+    /*if (celsius == 0.f)
+    {
+        std::cout << "Water freezes at this temperature\n";
+	}
+    else if (celsius == 100.f)
+    {
+        std::cout << "Water boils at this temperature\n";
+    }*/
+
+    // With epsilon much better
+    const float epsilon = 0.001f;
+    if (fabs(celsius) < epsilon)
+    {
+        std::cout << "Water freezes at this temperature\n";
+    }
+    else if (fabs(celsius - 100.f) < epsilon)
+    {
+        std::cout << "Water boils at this temperature\n";
+    }
+
     // Student exercise: calculate farenheihts from celsius
     std::cout << "Enter temperature in celsius: ";
     std::cin >> celsius;
     farenheits = celsius * 9 / 5 + 32;
     std::cout << "Temperature in farenheits: " << farenheits << "\n";
-
 }
