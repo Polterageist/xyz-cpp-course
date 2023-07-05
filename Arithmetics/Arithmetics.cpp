@@ -27,7 +27,9 @@ int main()
 
     bool isEven = numApples % 2 == 0;
     std::cout << "Is even: " << isEven << "\n";
-    
+    std::string evenessString = isEven ? "even" : "odd";
+    std::cout << numApples << " is " << evenessString << "\n";
+
     double a = 0.;
     double b = 0.;
     std::cout << "Enter a: ";
@@ -48,4 +50,5 @@ int main()
     std::cin >> celsius;
     farenheits = celsius * 9 / 5 + 32;
     std::cout << "Temperature in farenheits: " << farenheits << "\n";
+
 }
