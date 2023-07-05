@@ -1,0 +1,195 @@
+<mxfile host="app.diagrams.net" modified="2023-07-05T11:35:47.377Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" etag="b5_8nuzhOVe4dvLTBOmv" version="21.5.2" type="device">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="1434" dy="1900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="WNNLf0Y4ya_njdrN2upR-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="Init tries counters and generate random number between 1 and 100" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="155" y="40" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-1" value="Ask player his gues&amp;nbsp;" style="html=1;strokeWidth=2;shape=manualInput;whiteSpace=wrap;rounded=1;size=26;arcSize=11;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="230" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-1" target="WNNLf0Y4ya_njdrN2upR-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-4" target="WNNLf0Y4ya_njdrN2upR-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-13" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-10">
+          <mxGeometry x="0.0055" y="3" relative="1" as="geometry">
+            <mxPoint x="-5" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-4" target="WNNLf0Y4ya_njdrN2upR-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-4" value="Player guessed?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="350" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-6" target="WNNLf0Y4ya_njdrN2upR-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-6" value="Increase tries counter" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="150" y="160" width="140" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-9" target="WNNLf0Y4ya_njdrN2upR-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="370" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-9" value="Say player number is lower or greater" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="320" y="370" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-33" target="WNNLf0Y4ya_njdrN2upR-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-36" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-17">
+          <mxGeometry x="0.5759" y="-2" relative="1" as="geometry">
+            <mxPoint x="2" y="-81" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-14" value="Say player that he guessed and number of tries" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="490" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-16" target="WNNLf0Y4ya_njdrN2upR-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-23" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-22">
+          <mxGeometry x="-0.1672" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" target="WIyWlLk6GJQsqaUBKTNV-3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="175.0044827586207" y="1379.9999999999995" as="sourcePoint" />
+            <mxPoint x="148" y="80" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="175" y="1370" />
+              <mxPoint x="110" y="1370" />
+              <mxPoint x="110" y="80" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-25" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-24">
+          <mxGeometry x="-0.9395" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-16" value="Player wants to repeat?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="1210" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-19" target="WIyWlLk6GJQsqaUBKTNV-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-19" value="" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="200" y="-50" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-21" value="Say goodbye to player" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="1350" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-29" target="WNNLf0Y4ya_njdrN2upR-27">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="540" as="sourcePoint" />
+            <mxPoint x="220" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-27" value="Ask player to think of number between 1 and 100" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="650" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-14" target="WNNLf0Y4ya_njdrN2upR-29">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="540" as="sourcePoint" />
+            <mxPoint x="220" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-29" value="Init min and max numbers" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="570" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-32" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-27" target="WNNLf0Y4ya_njdrN2upR-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="700" as="sourcePoint" />
+            <mxPoint x="220" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-31" value="Take number in the middle of min and max and increase number of tries" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="720" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-34" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-31" target="WNNLf0Y4ya_njdrN2upR-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="780" as="sourcePoint" />
+            <mxPoint x="220" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-33" value="Ask player if this number correct" style="html=1;strokeWidth=2;shape=manualInput;whiteSpace=wrap;rounded=1;size=26;arcSize=11;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="840" width="100" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-35" target="WNNLf0Y4ya_njdrN2upR-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-35" value="Is number correct" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="930" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-37" value="Say amount of tries and who won" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="170" y="1090" width="100" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-40" target="WNNLf0Y4ya_njdrN2upR-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-40" value="Ask player, is his nubmer greater or lesser" style="shape=manualInput;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="305" y="930" width="130" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-46" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1.017;entryY=0.381;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-42" target="WNNLf0Y4ya_njdrN2upR-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="669.9999999999998" y="730" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="670" y="751" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-47" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-46">
+          <mxGeometry x="-0.8273" y="-3" relative="1" as="geometry">
+            <mxPoint x="-3" y="20" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-42" target="WNNLf0Y4ya_njdrN2upR-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-52" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WNNLf0Y4ya_njdrN2upR-50">
+          <mxGeometry x="-0.4333" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-42" value="Is min still lesser than max?" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.decision;whiteSpace=wrap;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="620" y="930" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-43" target="WNNLf0Y4ya_njdrN2upR-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-43" value="Adust min and max accordingly to player&#39;s answer" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="470" y="930" width="110" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WNNLf0Y4ya_njdrN2upR-49" target="WNNLf0Y4ya_njdrN2upR-37">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="1110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-49" value="Say player he is cheater" style="rounded=1;whiteSpace=wrap;html=1;absoluteArcSize=1;arcSize=14;strokeWidth=2;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="620" y="1090" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="WNNLf0Y4ya_njdrN2upR-53" value="If no then player lied to us" style="strokeWidth=2;html=1;shape=mxgraph.flowchart.annotation_2;align=left;labelPosition=right;pointerEvents=1;direction=west;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="720" y="930" width="50" height="100" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
