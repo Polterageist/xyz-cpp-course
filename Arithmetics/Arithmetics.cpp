@@ -30,6 +30,12 @@ int main()
     std::string evenessString = isEven ? "even" : "odd";
     std::cout << numApples << " is " << evenessString << "\n";
 
+    std::cout << "Enter divider: ";
+    int divider = 0;
+    std::cin >> divider;
+    int division2 = numApples / divider;
+    std::cout << "Division: " << division2 << "\n";
+
     double a = 0.;
     double b = 0.;
     std::cout << "Enter a: ";
