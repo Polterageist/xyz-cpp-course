@@ -324,6 +324,107 @@ void learnCasts()
 	std::cout << "\n";
 }
 
+void learnPointers()
+{
+	std::cout << "Pointers\n";
+
+	// Difference between pointer and reference
+	int var = 565;
+	int* varPointer = &var;
+	int& varRef = var;
+	std::cout << "Var=" << var << "\n";
+	std::cout << "Pointer=" << varPointer << ", Value=" << *varPointer << "\n";
+	std::cout << "Ref=" << varRef << "\n";
+
+	var = 453;
+	std::cout << "Var=" << var << "\n";
+	std::cout << "Pointer=" << varPointer << ", Value=" << *varPointer << "\n";
+	std::cout << "Ref=" << varRef << "\n";
+
+	int var2 = 353;
+	varPointer = &var2;
+	std::cout << "Var=" << var << "\n";
+	std::cout << "Pointer=" << varPointer << ", Value=" << *varPointer << "\n";
+	std::cout << "Ref=" << varRef << "\n";
+	varRef = var2;
+	std::cout << "Var=" << var << "\n";
+	std::cout << "Pointer=" << varPointer << ", Value=" << *varPointer << "\n";
+	std::cout << "Ref=" << varRef << "\n";
+
+	varPointer = nullptr;
+	std::cout << "Pointer=" << varPointer << "\n";
+
+	// Will crash
+	//std::cout << "*Pointer=" << *varPointer << "\n";
+
+	varPointer = &var;
+	int** pointerToPointer = &varPointer;
+	std::cout << "pointerToPointer=" << pointerToPointer << ", Value=" << *pointerToPointer << "\n";
+	std::cout << "**pointerToPointer=" << **pointerToPointer << "\n";
+
+	std::cout << "\n";
+}
+
+void bufferOverflow(int array[])
+{
+	std::cout << "Buffer overflow\n";
+	std::cout << "array[10]=" << array[10] << "\n";
+	std::cout << "*(array + 10)=" << *(array + 10) << "\n";
+}
+
+void printArray(int array[], size_t size)
+// void printArray(int* array, size_t size) // Equivalent
+{
+	std::cout << "array={";
+	for (size_t i = 0; i < size; ++i)
+	{
+		std::cout << array[i];
+		if (i < size - 1)
+		{
+			std::cout << ", ";
+		}
+	}
+	std::cout << "}\n";
+}
+
+void learnArraysAndPointers()
+{
+	std::cout << "Arrays and Pointers\n";
+
+	// Array is pointer
+	const size_t arraySize = 10;
+	int array[arraySize] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	printArray(array, arraySize);
+
+	int* pointer = array;
+	std::cout << "array[2]=" << array[2] << "\n";
+	std::cout << "pointer[2]=" << pointer[2] << "\n";
+
+	// Address ariphemtics
+	std::cout << "*(pointer + 2)=" << *(pointer + 2) << "\n";
+	std::cout << "*(array + 2)=" << *(array + 2) << "\n";
+
+	bufferOverflow(array);
+
+	// Void pointers
+	void* vPointer = (void*)pointer;
+
+	// *vPointer is invalid
+	// std::cout << "*vPointer=" << *vPointer << "\n";
+
+	// cast to short
+	short* shortPointer = (short*)(vPointer);
+	std::cout << "*(shortPointer + 2)=" << *(shortPointer + 2) << "\n";
+	std::cout << "*(shortPointer + 3)=" << *(shortPointer + 3) << "\n";
+	std::cout << "*(shortPointer + 2 * sizeof(int))=" << *(shortPointer + 2 * sizeof(int)) << "\n";
+	int* intPointer = (int*)(shortPointer + 2 * sizeof(int));
+	std::cout << "*(intPointer)=" << *intPointer << "\n";
+
+	*(array + 2) = 54;
+	printArray(array, arraySize);
+
+	std::cout << "\n";
+}
 
 int main()
 {
@@ -339,4 +440,8 @@ int main()
 	learnStructs();
 	learnArrays();
 	learnCasts();
+
+	// Lesson 4
+	learnPointers();
+	learnArraysAndPointers();
 }
