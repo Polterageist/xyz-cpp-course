@@ -276,6 +276,55 @@ void learnArrays()
 	std::cout << "\n";
 }
 
+struct yStruct
+{
+	int a = 0;
+	int b = 0;
+	mutable int c = 0;
+};
+
+void learnCasts()
+{
+	std::cout << "Casts\n";
+
+	const int constInt = 5;
+	std::cout << "constInt=" << constInt << "\n";
+
+	float floatNum = 3.14f;
+	// int intNum = floatNum; // Warning
+	int castedInt = static_cast<int>(floatNum); // No waarning
+	std::cout << "castedInt=" << castedInt << "\n";
+
+	// int& intRef = floatNum; // Error
+	int& castedIntRef = reinterpret_cast<int&>(floatNum); // No error
+	castedIntRef = 10;
+	std::cout << "castedIntRef=" << castedIntRef << "\n";
+	std::cout << "floatNum=" << floatNum << "\n";
+
+	// C-style cast
+	floatNum = 343;
+	int& castedIntRef2 = (int&)floatNum;
+	std::cout << "castedIntRef2=" << castedIntRef2 << "\n";
+	int castedInt2 = (int)floatNum;
+	std::cout << "castedInt2=" << castedInt2 << "\n";
+
+	// Const casts
+	const yStruct some = { 1, 2, 3 };
+	// some.a = 4; // Error
+	std::cout << "some.a=" << some.a << "\n";
+	const_cast<yStruct&>(some).a = 5;
+	std::cout << "some.a=" << some.a << "\n";
+	// (yStruct&)(some).a = 454; // Error
+
+	// Mutable members
+	std::cout << "some.c=" << some.c << "\n";
+	some.c = 6;
+	std::cout << "some.c=" << some.c << "\n";
+
+	std::cout << "\n";
+}
+
+
 int main()
 {
 	// Lesson 2
@@ -289,4 +338,5 @@ int main()
 	learnFloats();
 	learnStructs();
 	learnArrays();
+	learnCasts();
 }
