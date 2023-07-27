@@ -276,7 +276,7 @@ void learnArrays()
 	std::cout << "\n";
 }
 
-struct yStruct
+struct MyStruct
 {
 	int a = 0;
 	int b = 0;
@@ -309,10 +309,10 @@ void learnCasts()
 	std::cout << "castedInt2=" << castedInt2 << "\n";
 
 	// Const casts
-	const yStruct some = { 1, 2, 3 };
+	const MyStruct some = { 1, 2, 3 };
 	// some.a = 4; // Error
 	std::cout << "some.a=" << some.a << "\n";
-	const_cast<yStruct&>(some).a = 5;
+	const_cast<MyStruct&>(some).a = 5;
 	std::cout << "some.a=" << some.a << "\n";
 	// (yStruct&)(some).a = 454; // Error
 
@@ -426,6 +426,142 @@ void learnArraysAndPointers()
 	std::cout << "\n";
 }
 
+int* getStackVar(int val)
+{
+	int var = val;
+	return &var; // Produces warning
+}
+
+int* getHeapVar(int val)
+{
+	int* var = new int(val);
+	return var;
+}
+
+void learnStackAndHeap()
+{
+	std::cout << "Stack and Heap\n";
+
+	int* pointer = getStackVar(10);
+	std::cout << "pointer=" << pointer << "\n";
+	std::cout << "*pointer=" << *pointer << "\n"; // UB
+
+	pointer = getHeapVar(20);
+	std::cout << "pointer=" << pointer << "\n";
+	std::cout << "*pointer=" << *pointer << "\n"; // UB
+
+	// Avoid memory leaks
+	delete pointer;
+
+	std::cout << "\n";
+}
+
+void learnMemoryOps()
+{
+	std::cout << "Memory operations\n";
+	// Memory operations
+	const int arraySize = 10;
+	int* array = (int*)malloc(arraySize * sizeof(int));
+	// array = new int[arraySize]; // C++ equivalent
+	if (array == nullptr)
+	{
+		std::cout << "Failed to allocate memory\n";
+		return;
+	}
+
+	printArray(array, arraySize);
+
+	// Set memory
+	memset((void*)array, 0, arraySize * sizeof(int));
+	printArray(array, arraySize);
+
+	// Copy memory
+	for (size_t i = 0; i < arraySize; ++i)
+	{
+		array[i] = (int)i;
+	}
+	printArray(array, arraySize);
+	int array2[arraySize];
+	memcpy((void*)array2, (void*)array, arraySize * sizeof(int));
+	printArray(array2, arraySize);
+
+	// Compare memory
+	std::cout << "memcmp(array, array2, sizeof(array))=" << memcmp(array, array2, sizeof(array)) << "\n";
+	array[0] = 1;
+	std::cout << "memcmp(array, array2, sizeof(array))=" << memcmp(array, array2, sizeof(array)) << "\n";
+
+	array[6] = 1;
+	std::cout << "memcmp(array, array2, sizeof(array))=" << memcmp(array, array2, sizeof(array)) << "\n";
+
+	// Free memory
+	free(array);
+	// delete[] array; // C++ equivalent
+	array = nullptr; // Always set to nullptr after free, as ptr is invalid now
+
+	std::cout << "\n";
+}
+
+struct DynArray
+{
+	int* data;
+	size_t size;
+};
+
+DynArray* createDynArray(size_t size)
+{
+	DynArray* array = new DynArray();
+	array->data = new int[size];
+	array->size = size;
+	return array;
+}
+
+void deleteDynArray(DynArray* array)
+{
+	delete[] array->data;
+	delete array;
+}
+
+void addElement(DynArray* array, int element)
+{
+	int* newData = new int[array->size + 1];
+	memcpy(newData, array->data, array->size * sizeof(int));
+	newData[array->size] = element;
+	delete[] array->data;
+	array->data = newData;
+	array->size += 1;
+}
+
+void removeElement(DynArray* array, size_t index)
+{
+	if (index >= array->size)
+	{
+		return;
+	}
+	int* newData = new int[array->size - 1];
+	memcpy(newData, array->data, index * sizeof(int));
+	memcpy(newData + index, array->data + index + 1, (array->size - index - 1) * sizeof(int));
+	delete[] array->data;
+	array->data = newData;
+	array->size -= 1;
+}
+
+void learnDynArray()
+{
+	std::cout << "Dynamic array\n";
+	DynArray* array = createDynArray(10);
+	for (size_t i = 0; i < array->size; ++i)
+	{
+		array->data[i] = (int)i;
+	}
+	printArray(array->data, array->size);
+	addElement(array, 10);
+	printArray(array->data, array->size);
+	removeElement(array, 5);
+	printArray(array->data, array->size);
+	deleteDynArray(array);
+	std::cout << "\n";
+}
+
 int main()
 {
 	// Lesson 2
@@ -444,4 +580,7 @@ int main()
 	// Lesson 4
 	learnPointers();
 	learnArraysAndPointers();
+	learnStackAndHeap();
+	learnMemoryOps();
+	learnDynArray();
 }
