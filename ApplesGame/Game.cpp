@@ -17,10 +17,20 @@ namespace ApplesGame
 
 	void RestartGame(GameState& gameState)
 	{
+		if (gameState.apples)
+		{
+			delete[] gameState.apples;
+
+			gameState.apples = nullptr;
+			gameState.numApples = 0;
+		}
+		
 		// Init player
 		InitPlayer(gameState.player, gameState.playerTexture);
 		// Init apples
-		for (int i = 0; i < NUM_APPLES; i++)
+		gameState.numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
+		gameState.apples = new Apple[gameState.numApples];
+		for (int i = 0; i < gameState.numApples; i++)
 		{
 			InitApple(gameState.apples[i], gameState.appleTexture);
 		}
@@ -31,19 +41,45 @@ namespace ApplesGame
 		gameState.timeSinceGameOver = 0.f;
 	}
 
-	void HandleInput(GameState& gameState)
+	void HandleWindowEvents(GameState& gameState, sf::RenderWindow& window)
 	{
-		if (gameState.isGameOver)
+		sf::Event event;
+		while (window.pollEvent(event))
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			// Close window if close button or Escape key pressed
+			if (event.type == sf::Event::Closed)
 			{
-				RestartGame(gameState);
+				window.close();
+			}
+			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
+			{
+				window.close();
 			}
 
-			// We don't handle input in game over state
-			return;
-		}
+			if (gameState.isGameOver && (event.type == sf::Event::KeyPressed))
+			{
+				if (event.key.code == sf::Keyboard::Space)
+				{
+					RestartGame(gameState);
+				}
+				else if (event.key.code == sf::Keyboard::Num1)
+				{
+					gameState.options = (GameOptions)((std::uint8_t)gameState.options ^ (std::uint8_t)GameOptions::InfiniteApples);
+				}
+				else if (event.key.code == sf::Keyboard::Num2)
+				{
+					gameState.options = (GameOptions)((std::uint8_t)gameState.options ^ (std::uint8_t)GameOptions::WithAcceleration);
+				}
 
+				// We don't handle input in game over state
+				return;
+			}
+
+		}
+	}
+
+	void HandleInput(GameState& gameState)
+	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			gameState.player.direction = PlayerDirection::Up;
@@ -66,25 +102,46 @@ namespace ApplesGame
 	{
 		if (!gameState.isGameOver)
 		{
+			HandleInput(gameState);
+
 			// Update player
 			UpdatePlayer(gameState.player, timeDelta);
 
-			for (int i = 0; i < NUM_APPLES; i++)
+			for (int i = 0; i < gameState.numApples; i++)
 			{
+				if (gameState.apples[i].isEaten)
+				{
+					continue;
+				}
+
 				// Check collision with apple
 				if (HasPlayerCollisionWithApple(gameState.player, gameState.apples[i]))
 				{
-					// Move apple to a new random position
-					InitApple(gameState.apples[i], gameState.appleTexture);
+					if ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples)
+					{
+						// Move apple to a new random position
+						InitApple(gameState.apples[i], gameState.appleTexture);
+					}
+					else
+					{
+						// Mark apple as eaten
+						gameState.apples[i].isEaten = true;
+					}
+
 					// Increase eaten apples counter
 					gameState.numEatenApples++;
 					// Increase player speed
-					gameState.player.speed += ACCELERATION;
+					if ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::WithAcceleration)
+					{
+						gameState.player.speed += ACCELERATION;
+					}
 				}
 			}
 
+			bool isGameFinished = (gameState.numEatenApples == gameState.numApples) 
+				&& !((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples);
 			// Check collision with screen border
-			if (HasPlayerCollisionWithScreenBorder(gameState.player))
+			if (isGameFinished || HasPlayerCollisionWithScreenBorder(gameState.player))
 			{
 				gameState.isGameOver = true;
 				gameState.timeSinceGameOver = 0.f;
@@ -103,11 +160,22 @@ namespace ApplesGame
 		// Draw player
 		DrawPlayer(gameState.player, window);
 		// Draw apples
-		for (int i = 0; i < NUM_APPLES; i++)
+		for (int i = 0; i < gameState.numApples; i++)
 		{
 			DrawApple(gameState.apples[i], window);
 		}
 
 		DrawUI(gameState.uiState, window);
 	}
+
+	void ShutdownGame(GameState& gameState)
+	{
+		if (gameState.apples)
+		{
+			delete[] gameState.apples;
+			gameState.apples = nullptr;
+			gameState.numApples = 0;
+		}
+	}
+
 }

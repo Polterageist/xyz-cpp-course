@@ -10,6 +10,7 @@ namespace ApplesGame
 		// init apple state
 		apple.position.x = (float)(rand() % SCREEN_WIDTH);
 		apple.position.y = (float)(rand() % SCREEN_HEGHT);
+		apple.isEaten = false;
 
 		// Init sprite
 		apple.sprite.setTexture(texture);
@@ -19,8 +20,15 @@ namespace ApplesGame
 
 	void DrawApple(Apple& apple, sf::RenderWindow& window)
 	{
+		if (apple.isEaten)
+		{
+			return;
+		}
+			
 		apple.sprite.setPosition(OurVectorToSf(apple.position));
 		window.draw(apple.sprite);
 	}
+
+
 
 }
