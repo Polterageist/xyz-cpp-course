@@ -8,6 +8,7 @@ namespace ApplesGame
 	{
 		Position position;
 		sf::Sprite sprite;
+		bool isEaten;
 	};
 
 	void InitApple(Apple& apple, const sf::Texture& texture);

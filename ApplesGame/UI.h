@@ -10,6 +10,7 @@ namespace ApplesGame
 		sf::Text scoreText;
 		sf::Text inputHintText;
 		sf::Text gameOverText;
+		sf::Text optionsText;
 	};
 
 	void InitUI(UIState& uiState, const sf::Font& font);
