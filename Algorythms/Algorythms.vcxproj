@@ -128,9 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Algorythms.cpp" />
+    <ClCompile Include="LearnTuringMachine.cpp" />
+    <ClCompile Include="Stats.cpp" />
     <ClCompile Include="TuringMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LearnAssymptoticAnalysis.h" />
+    <ClInclude Include="LearnTuringMachine.h" />
+    <ClInclude Include="Stats.h" />
     <ClInclude Include="TuringMachine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
