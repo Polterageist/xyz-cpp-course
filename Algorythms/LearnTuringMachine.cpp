@@ -114,7 +114,7 @@ std::string InvertStringWithTuringMachine(const std::string& input, Stats& stats
 	//PrintTuringMachine(turingMachine);
 
 	stats.steps = turingMachine.steps;
-	stats.memory = turingMachine.tapeSize;
+	stats.memory = turingMachine.tapeSize - stats.dataLength;
 
 	std::string result;
 	for (int i = 0; i < turingMachine.tapeSize; i++)
@@ -180,7 +180,7 @@ std::string InvertStringWithCpp(const std::string& input, Stats& stats)
 		++stats.steps;
 	}
 
-	stats.memory = (int)memory.length();
+	stats.memory = (int)memory.length() - stats.dataLength + sizeof(cursor) + sizeof(savedSymbol);
 
 	std::string result;
 	for (int i = 0; i < memory.length(); i++)
@@ -220,7 +220,7 @@ std::string InvertStringWithCppFast(const std::string& input, Stats& stats)
 		++stats.steps;
 	}
 
-	stats.memory = (int)result.length();
+	stats.memory = (int)result.length() - stats.dataLength + 2 * sizeof(length) + sizeof(char);
 
 	return result;
 }
