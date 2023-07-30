@@ -303,6 +303,7 @@ void CalculateInvertStringStats()
 
 	WriteMultipleStatsCSV("InvertStringStats.csv", stats);
 	std::cout << "Results are written to InvertStringStats.csv" << std::endl;
+	std::cout << std::endl;
 }
 
 
