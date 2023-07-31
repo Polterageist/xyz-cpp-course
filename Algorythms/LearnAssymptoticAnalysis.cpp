@@ -96,11 +96,89 @@ void CalculateDifferentStats()
 	std::cout << "Results are written to FewAlgorythmsStats.csv" << std::endl;
 }
 
+// Time complexity: n^2, Memory complexity: n
+int FindNthSimpleNumber(int n, Stats& stats)
+{
+	InitStats(stats);
+	stats.dataLength = n;
+	int i = 0;
+
+	if (n == 0)
+	{
+		++stats.steps;
+		return 2;
+	}
+	else if(n == 1)
+	{
+		++stats.steps;
+		return 3;
+	}
+
+	std::vector<int> simpleNumbers;
+	simpleNumbers.push_back(2);
+	simpleNumbers.push_back(3);
+	++stats.steps;
+	++stats.memory;
+	for (int i = 2; i <= n; ++i)
+	{
+		++stats.steps;
+		int number = simpleNumbers[i - 1] + 2; // We know that next simple number is odd
+		++stats.steps;
+		while (true)
+		{
+			++stats.steps;
+			bool isSimple = true;
+			++stats.steps;
+			for (int j = 1; j < i; ++j)
+			{
+				++stats.steps;
+				if (number % simpleNumbers[j] == 0)
+				{
+					isSimple = false;
+					++stats.steps;
+					break;
+				}
+				++stats.steps;
+			}
+			++stats.steps;
+			if (isSimple)
+			{
+				simpleNumbers.push_back(number);
+				++stats.steps;
+				++stats.memory;
+				break;
+			}
+			++stats.steps;
+			number += 2;
+		}
+		++stats.steps;
+	}
+
+	return simpleNumbers[n];
+}
+
+void CalculateSimpleNumbersStats()
+{
+	std::cout << "Calculate 100 simple numbers:" << std::endl;
+
+	Stats stats[100];
+	for (int i = 0; i < 100; ++i)
+	{
+		int simpleNumber = FindNthSimpleNumber(i, stats[i]);
+		std::cout << "Simple number #" << i << " is " << simpleNumber << std::endl;
+	}
+
+	WriteStatsCSV("SimpleNumbersStats.csv", stats, 100);
+	std::cout << "Stats are written to SimpleNumbersStats.csv" << std::endl;
+	std::cout << std::endl;
+}
+
 void LearnAssymptoticAnalysis()
 {
 	std::cout << "Learn Asymptotic Analysis" << std::endl;
 
 	CalculateDifferentStats();
+	CalculateSimpleNumbersStats();
 
 	std::cout << std::endl;
 }
