@@ -121,11 +121,59 @@ void LearnStdIterators()
 	std::cout << std::endl;
 }
 
+void LearnStdAlgo()
+{
+	std::cout << "Learn some useful std algorythms" << std::endl;
+	const int arraySize = 10;
+	int staticArray[arraySize];
+	for (int i = 0; i < arraySize; ++i)
+	{
+		staticArray[i] = i;
+	}
+	std::cout << "Static array: ";
+	for (auto it = std::begin(staticArray); it != std::end(staticArray); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	// Linear searcch
+	auto it = std::find(std::begin(staticArray), std::end(staticArray), 5);
+	std::cout << "Found element 5 at index " << std::distance(std::begin(staticArray), it) << std::endl;
+
+	it = std::find(std::begin(staticArray), std::end(staticArray), 11);
+	if (it == std::end(staticArray))
+	{
+		std::cout << "Element 11 not found" << std::endl;
+	}
+
+	staticArray[5] = 4;
+	// Binary search, which finds first and last element, which are equal to the searched element
+	auto range = std::equal_range(std::begin(staticArray), std::end(staticArray), 4);
+	std::cout << "Found range of elements equal to 4: [" << std::distance(std::begin(staticArray), range.first) << ", " << std::distance(std::begin(staticArray), range.second) << ")" << std::endl;
+
+	// Check if array is sorted
+	bool isSorted = std::is_sorted(std::begin(staticArray), std::end(staticArray));
+	std::cout << "Is array sorted: " << isSorted << std::endl;
+	
+	// Shuffle array
+	std::random_shuffle(std::begin(staticArray), std::end(staticArray));
+	isSorted = std::is_sorted(std::begin(staticArray), std::end(staticArray));
+	std::cout << "Is modified array sorted: " << isSorted << std::endl;
+
+	// Sort array
+	std::sort(std::begin(staticArray), std::end(staticArray));
+	isSorted = std::is_sorted(std::begin(staticArray), std::end(staticArray));
+	std::cout << "Is sorted array sorted: " << isSorted << std::endl;
+
+	std::cout << std::endl;
+}
 
 void LearnSearchAndStd()
 {
 	std::cout << "Learn search and std" << std::endl;
 	CalculateBinarySearchStats();
 	LearnStdIterators();
+	LearnStdAlgo();
 	std::cout << std::endl;
 }
