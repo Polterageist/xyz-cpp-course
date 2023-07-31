@@ -2,6 +2,7 @@
 #include "Stats.h"
 #include <iostream>
 #include "LearnAssymptoticAnalysis.h"
+#include <algorithm>
 
 // Time: best: O(1), worst: O(log(N)), Memory: O(1)
 int BinarySearch(int* array, int arraySize, int elem, Stats& stats)
@@ -83,9 +84,48 @@ void CalculateBinarySearchStats()
 	std::cout << std::endl;
 }
 
+void LearnStdIterators()
+{
+	std::cout << "Learn std iterators" << std::endl;
+
+	const int arraySize = 10;
+	int staticArray[arraySize];
+	for (int i = 0; i < arraySize; ++i)
+	{
+		staticArray[i] = i;
+	}
+
+	std::cout << "Static array printed from iterator: ";
+	for (auto it = std::begin(staticArray); it != std::end(staticArray); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "Static array printed in reverse order: ";
+	for (auto it = std::rbegin(staticArray); it != std::rend(staticArray); ++it)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "Each even element of array: ";
+	for (auto it = std::begin(staticArray); it != std::end(staticArray); it += 2)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	std::cout << "Calculated array size = " << std::distance(std::begin(staticArray), std::end(staticArray)) << std::endl;
+
+	std::cout << std::endl;
+}
+
+
 void LearnSearchAndStd()
 {
 	std::cout << "Learn search and std" << std::endl;
 	CalculateBinarySearchStats();
+	LearnStdIterators();
 	std::cout << std::endl;
 }
