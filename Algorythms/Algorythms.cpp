@@ -1,5 +1,6 @@
 ﻿#include "LearnTuringMachine.h"
 #include "LearnAssymptoticAnalysis.h"
+#include "LearnSearchAndStd.h"
 
 int main()
 {
@@ -8,4 +9,7 @@ int main()
 
 	// Lesson 2-2-2
 	LearnAssymptoticAnalysis();
+
+	// Lesson 2-2-3
+	LearnSearchAndStd();
 }

@@ -129,12 +129,14 @@
   <ItemGroup>
     <ClCompile Include="Algorythms.cpp" />
     <ClCompile Include="LearnAssymptoticAnalysis.cpp" />
+    <ClCompile Include="LearnSearchAndStd.cpp" />
     <ClCompile Include="LearnTuringMachine.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="TuringMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LearnAssymptoticAnalysis.h" />
+    <ClInclude Include="LearnSearchAndStd.h" />
     <ClInclude Include="LearnTuringMachine.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="TuringMachine.h" />

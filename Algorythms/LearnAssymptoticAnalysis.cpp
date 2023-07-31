@@ -21,21 +21,20 @@ int GetArrayElem(int array[], size_t arraySize, size_t index, Stats& stats)
 }
 
 // Time complexity: O(n), Memory complexity: O(1)
-size_t FindArrayItemIndex(int array[], size_t arraySize, int item, Stats& stats)
+int FindArrayItemIndex(int array[], int arraySize, int item, struct Stats& stats)
 {
 	InitStats(stats);
 	stats.dataLength = arraySize;
-	stats.memory = arraySize * sizeof(int);
-	for (size_t i = 0; i < arraySize; ++i)
+	stats.memory = sizeof(int);
+	for (int i = 0; i < arraySize; ++i)
 	{
 		++stats.steps;
 		if (array[i] == item)
 		{
 			return i;
 		}
-		++stats.steps;
 	}
-	stats.memory = sizeof(int);
+	
 	return -1;
 }
 
