@@ -29,6 +29,12 @@ namespace ApplesGame
 		uiState.optionsText.setFillColor(sf::Color::White); 
 		uiState.optionsText.setString("Press 1 to toggle infinite apples, 2 to toggle acceleration, Space to restart");
 		uiState.optionsText.setOrigin(GetTextOrigin(uiState.optionsText, { 0.5f, 1.f }));
+
+		uiState.recordsTableText.setFont(font);
+		uiState.recordsTableText.setCharacterSize(24);
+		uiState.recordsTableText.setFillColor(sf::Color::Green);
+		uiState.recordsTableText.setString("Records:\nPlayer: 999\nPlayer: 999\nPlayer: 999\nPlayer: 999\nPlayer: 999");
+		uiState.recordsTableText.setOrigin(GetTextOrigin(uiState.recordsTableText, { 0.5f, 0.f }));
 	}
 
 	void UpdateUI(UIState& uiState, const struct GameState& gameState, float timeDelta)
@@ -39,6 +45,13 @@ namespace ApplesGame
 		sf::Color gameOverTextColor = (int)gameState.timeSinceGameOver % 2? sf::Color::Red : sf::Color::Yellow;
 		uiState.gameOverText.setFillColor(gameOverTextColor);
 		
+		uiState.recordsTableText.setString("Records:");
+		for (const RecordsTableItem& item : gameState.recordsTable)
+		{
+			uiState.recordsTableText.setString(uiState.recordsTableText.getString() + "\n" + item.name + ": " + std::to_string(item.score));
+		}
+		uiState.recordsTableText.setOrigin(GetTextOrigin(uiState.recordsTableText, { 0.5f, 0.f }));
+
 		bool isInfiniteApples = ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples) != (std::uint8_t)GameOptions::Empty;
 		bool isWithAcceleration = ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::WithAcceleration) != (std::uint8_t)GameOptions::Empty;
 		std::string optionsText = "Press 1 to toggle infinite apples: " + std::string(isInfiniteApples ? "ON" : "OFF") + "\n"
@@ -60,6 +73,9 @@ namespace ApplesGame
 		{
 			uiState.gameOverText.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
 			window.draw(uiState.gameOverText);
+
+			uiState.recordsTableText.setPosition(window.getSize().x / 2.f, 30.f);
+			window.draw(uiState.recordsTableText);
 
 			uiState.optionsText.setPosition(window.getSize().x / 2.f, window.getSize().y - 10.f);
 			window.draw(uiState.optionsText);

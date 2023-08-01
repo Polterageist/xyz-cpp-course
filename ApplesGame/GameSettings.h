@@ -15,4 +15,5 @@ namespace ApplesGame
 	const int MAX_APPLES = 40;
 	const unsigned int SCREEN_WIDTH = 800;
 	const unsigned int SCREEN_HEGHT = 600;
+	const int MAX_RECORDS_TABLE_SIZE = 5;
 }

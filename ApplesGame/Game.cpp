@@ -1,15 +1,27 @@
 #include "Game.h"
 #include <assert.h>
-
+#include <algorithm>
 
 namespace ApplesGame
 {
+	bool operator<(const RecordsTableItem& lhs, const RecordsTableItem& rhs)
+	{
+		return lhs.score > rhs.score;
+	}
+
 	void InitGame(GameState& gameState)
 	{
 		// Init game resources (terminate if error)
 		assert(gameState.playerTexture.loadFromFile(RESOURCES_PATH + "Pacman.png"));
 		assert(gameState.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
 		assert(gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
+
+		// Generate fake records table
+		gameState.recordsTable[0] = { "John", 50 };
+		gameState.recordsTable[1] = { "Alice", 40 };
+		gameState.recordsTable[2] = { "Bob", 30 };
+		gameState.recordsTable[3] = { "Clementine", 20 };
+		gameState.recordsTable[4] = { "You", 0 };
 
 		InitUI(gameState.uiState, gameState.font);
 		RestartGame(gameState);
@@ -145,6 +157,19 @@ namespace ApplesGame
 			{
 				gameState.isGameOver = true;
 				gameState.timeSinceGameOver = 0.f;
+
+				// Find player in records table and update his score
+				for (RecordsTableItem& item : gameState.recordsTable)
+				{
+					if (item.name == "You")
+					{
+						item.score = gameState.numEatenApples;
+						break;
+					}
+				}
+
+				// Sort records table
+				std::sort(std::begin(gameState.recordsTable), std::end(gameState.recordsTable));
 			}
 		}
 		else
