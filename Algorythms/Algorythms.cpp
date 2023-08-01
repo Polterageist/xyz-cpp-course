@@ -1,10 +1,15 @@
-﻿#include "LearnTuringMachine.h"
+﻿#include <stdlib.h>
+
+#include "LearnTuringMachine.h"
 #include "LearnAssymptoticAnalysis.h"
 #include "LearnSearchAndStd.h"
 #include "LearnSorts.h"
 
+
 int main()
 {
+	srand((unsigned)time(nullptr));
+
 	// Lesson 2-2-1
 	LearnTuringMachine();
 

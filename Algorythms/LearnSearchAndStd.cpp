@@ -46,7 +46,7 @@ void CalculateBinarySearchStats()
 
 	// Produce sorted array
 	std::cout << "Array: [";
-	int maxNumber = 0;
+	int maxNumber = 1;
 	for (int i = 0; i < arraySize; ++i)
 	{
 		array[i] = maxNumber + rand() % 4;
