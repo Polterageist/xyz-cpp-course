@@ -11,7 +11,7 @@ void InitTuringMachine(TuringMachine& turingMachine, int initialState, const cha
 	assert(rules != nullptr &&rulesSize > 0);
 
 	turingMachine.state = initialState;
-	turingMachine.tapeSize = strlen(tape) + 1;
+	turingMachine.tapeSize = (int)strlen(tape) + 1;
 	turingMachine.tape = new char[turingMachine.tapeSize];
 	turingMachine.position = 0;
 	

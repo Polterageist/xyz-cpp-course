@@ -5,7 +5,7 @@
 int GetArrayElem(int array[], size_t arraySize, size_t index, Stats& stats)
 {
 	InitStats(stats);
-	stats.dataLength = arraySize;
+	stats.dataLength = (int)arraySize;
 	if (arraySize <= index)
 	{
 		++stats.steps;
