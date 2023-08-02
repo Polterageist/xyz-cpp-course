@@ -50,18 +50,7 @@ namespace ApplesGame
 
 	bool HasPlayerCollisionWithScreenBorder(const Player& player)
 	{
-		return (player.position.x - PLAYER_SIZE / 2.f < 0) ||
-			(player.position.x + PLAYER_SIZE / 2.f > SCREEN_WIDTH) ||
-			(player.position.y - PLAYER_SIZE / 2.f < 0) ||
-			(player.position.y + PLAYER_SIZE / 2.f > SCREEN_HEGHT);
-	}
-
-	bool HasPlayerCollisionWithApple(const Player& player, const Apple& apple)
-	{
-		float dx = player.position.x - apple.position.x;
-		float dy = player.position.y - apple.position.y;
-		float distance = sqrt(dx * dx + dy * dy);
-		return distance < (PLAYER_SIZE + APPLE_SIZE) / 2.f;
+		return !IsPointInRect(player.position, { 0.f, 0.f }, { (float)SCREEN_WIDTH, (float)SCREEN_HEGHT } );
 	}
 
 	void DrawPlayer(Player& player, sf::RenderWindow& window)

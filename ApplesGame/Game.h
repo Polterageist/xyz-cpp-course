@@ -31,6 +31,8 @@ namespace ApplesGame
 		Player player;
 		Apple* apples = nullptr;
 		int numApples = 0;
+		ApplesGrid applesGrid;
+
 		int numEatenApples = 0;
 		UIState uiState;
 		bool isGameOver = false;

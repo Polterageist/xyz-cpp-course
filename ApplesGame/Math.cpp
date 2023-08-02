@@ -2,6 +2,15 @@
 
 namespace ApplesGame
 {
+
+	Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs)
+	{
+		Vector2D result;
+		result.x = lhs.x + rhs.x;
+		result.y = lhs.y + rhs.y;
+		return result;
+	}
+
 	sf::Vector2f OurVectorToSf(const Vector2D& v)
 	{
 		return sf::Vector2f(v.x, v.y);
@@ -27,6 +36,19 @@ namespace ApplesGame
 			(textSize.left + textSize.width) * relativePosition.x,
 			(textSize.top + textSize.height) * relativePosition.y,
 		};
+	}
+
+	bool IsPointInRect(Vector2D point, Vector2D rectTL, Vector2D rectBR)
+	{
+		if (point.x < rectTL.x || point.x > rectBR.x)
+		{
+			return false;
+		}
+		if (point.y < rectTL.y || point.y > rectBR.y)
+		{
+			return false;
+		}
+		return true;
 	}
 
 }

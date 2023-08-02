@@ -17,10 +17,10 @@ namespace ApplesGame
 		assert(gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
 
 		// Generate fake records table
-		gameState.recordsTable[0] = { "John", 50 };
-		gameState.recordsTable[1] = { "Alice", 40 };
-		gameState.recordsTable[2] = { "Bob", 30 };
-		gameState.recordsTable[3] = { "Clementine", 20 };
+		gameState.recordsTable[0] = { "John", MAX_APPLES };
+		gameState.recordsTable[1] = { "Alice", MAX_APPLES / 2 };
+		gameState.recordsTable[2] = { "Bob", MAX_APPLES / 3 };
+		gameState.recordsTable[3] = { "Clementine", MAX_APPLES / 4 };
 		gameState.recordsTable[4] = { "You", 0 };
 
 		InitUI(gameState.uiState, gameState.font);
@@ -40,11 +40,14 @@ namespace ApplesGame
 		// Init player
 		InitPlayer(gameState.player, gameState.playerTexture);
 		// Init apples
+		ClearApplesGrid(gameState.applesGrid);
 		gameState.numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
 		gameState.apples = new Apple[gameState.numApples];
 		for (int i = 0; i < gameState.numApples; i++)
 		{
 			InitApple(gameState.apples[i], gameState.appleTexture);
+			ResetAppleState(gameState.apples[i]);
+			AddAppleToGrid(gameState.applesGrid, gameState.apples[i]);
 		}
 
 		// Init game state
@@ -119,25 +122,24 @@ namespace ApplesGame
 			// Update player
 			UpdatePlayer(gameState.player, timeDelta);
 
-			for (int i = 0; i < gameState.numApples; i++)
-			{
-				if (gameState.apples[i].isEaten)
-				{
-					continue;
-				}
+			Apple* collidingApples[MAX_APPLES_IN_CELL] = { nullptr };
+			int numCollidingApples = 0;
 
-				// Check collision with apple
-				if (HasPlayerCollisionWithApple(gameState.player, gameState.apples[i]))
+			if (FindPlayerCollisionWithApples(gameState.player.position, gameState.applesGrid, collidingApples, numCollidingApples))
+			{
+				for (int i = 0; i < numCollidingApples; i++)
 				{
 					if ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples)
 					{
 						// Move apple to a new random position
-						InitApple(gameState.apples[i], gameState.appleTexture);
+						ResetAppleState(*collidingApples[i]);
+						AddAppleToGrid(gameState.applesGrid, *collidingApples[i]);
 					}
 					else
 					{
 						// Mark apple as eaten
-						gameState.apples[i].isEaten = true;
+						MarkAppleAsEaten(*collidingApples[i]);
+						RemoveAppleFromGrid(gameState.applesGrid, *collidingApples[i]);
 					}
 
 					// Increase eaten apples counter
