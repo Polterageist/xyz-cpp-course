@@ -11,6 +11,7 @@ namespace ApplesGame
 		sf::Text inputHintText;
 		sf::Text gameOverText;
 		sf::Text optionsText;
+		sf::Text recordsTableText;
 	};
 
 	void InitUI(UIState& uiState, const sf::Font& font);

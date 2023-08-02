@@ -17,16 +17,27 @@ namespace ApplesGame
 		Empty = 0
 	};
 
+	struct RecordsTableItem
+	{
+		std::string name;
+		int score = 0;
+	};
+
+	bool operator<(const RecordsTableItem& lhs, const RecordsTableItem& rhs);
+
 	struct GameState
 	{
 		GameOptions options = GameOptions::Default;
 		Player player;
 		Apple* apples = nullptr;
 		int numApples = 0;
+		ApplesGrid applesGrid;
+
 		int numEatenApples = 0;
 		UIState uiState;
 		bool isGameOver = false;
 		float timeSinceGameOver = 0.f;
+		RecordsTableItem recordsTable[MAX_RECORDS_TABLE_SIZE];
 
 		// Game resources
 		sf::Font font;

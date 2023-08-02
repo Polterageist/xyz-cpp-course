@@ -25,7 +25,6 @@ namespace ApplesGame
 	void UpdatePlayer(Player& player, float timeDelta);
 
 	bool HasPlayerCollisionWithScreenBorder(const Player& player);
-	bool HasPlayerCollisionWithApple(const Player& player, const struct Apple& apple);
 
 	void DrawPlayer(Player& player, sf::RenderWindow& window);
 }
