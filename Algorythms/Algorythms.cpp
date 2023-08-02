@@ -4,6 +4,7 @@
 #include "LearnAssymptoticAnalysis.h"
 #include "LearnSearchAndStd.h"
 #include "LearnSorts.h"
+#include "LearnVector.h"
 
 
 int main()
@@ -21,4 +22,7 @@ int main()
 
 	// Lesson 2-2-4
 	LearnSorts();
+
+	// Lesson 2-3-1
+	LearnVector();
 }
