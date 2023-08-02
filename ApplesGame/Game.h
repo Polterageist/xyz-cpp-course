@@ -29,8 +29,7 @@ namespace ApplesGame
 	{
 		GameOptions options = GameOptions::Default;
 		Player player;
-		Apple* apples = nullptr;
-		int numApples = 0;
+		std::vector<Apple> apples;
 		ApplesGrid applesGrid;
 
 		int numEatenApples = 0;

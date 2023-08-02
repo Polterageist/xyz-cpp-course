@@ -29,25 +29,19 @@ namespace ApplesGame
 
 	void RestartGame(GameState& gameState)
 	{
-		if (gameState.apples)
-		{
-			delete[] gameState.apples;
-
-			gameState.apples = nullptr;
-			gameState.numApples = 0;
-		}
+		gameState.apples.clear();
 		
 		// Init player
 		InitPlayer(gameState.player, gameState.playerTexture);
 		// Init apples
 		ClearApplesGrid(gameState.applesGrid);
-		gameState.numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
-		gameState.apples = new Apple[gameState.numApples];
-		for (int i = 0; i < gameState.numApples; i++)
+		int numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
+		gameState.apples.resize(numApples);
+		for (Apple& apple : gameState.apples)
 		{
-			InitApple(gameState.apples[i], gameState.appleTexture);
-			ResetAppleState(gameState.apples[i]);
-			AddAppleToGrid(gameState.applesGrid, gameState.apples[i]);
+			InitApple(apple, gameState.appleTexture);
+			ResetAppleState(apple);
+			AddAppleToGrid(gameState.applesGrid, apple);
 		}
 
 		// Init game state
@@ -152,7 +146,7 @@ namespace ApplesGame
 				}
 			}
 
-			bool isGameFinished = (gameState.numEatenApples == gameState.numApples) 
+			bool isGameFinished = (gameState.numEatenApples == gameState.apples.size()) 
 				&& !((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples);
 			// Check collision with screen border
 			if (isGameFinished || HasPlayerCollisionWithScreenBorder(gameState.player))
@@ -187,9 +181,9 @@ namespace ApplesGame
 		// Draw player
 		DrawPlayer(gameState.player, window);
 		// Draw apples
-		for (int i = 0; i < gameState.numApples; i++)
+		for (Apple& apple: gameState.apples)
 		{
-			DrawApple(gameState.apples[i], window);
+			DrawApple(apple, window);
 		}
 
 		DrawUI(gameState.uiState, window);
@@ -197,12 +191,7 @@ namespace ApplesGame
 
 	void ShutdownGame(GameState& gameState)
 	{
-		if (gameState.apples)
-		{
-			delete[] gameState.apples;
-			gameState.apples = nullptr;
-			gameState.numApples = 0;
-		}
+
 	}
 
 }
