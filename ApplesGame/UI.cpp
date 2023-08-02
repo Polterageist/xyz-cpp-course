@@ -66,18 +66,19 @@ namespace ApplesGame
 		uiState.scoreText.setPosition(10.f, 10.f);
 		window.draw(uiState.scoreText);
 
-		uiState.inputHintText.setPosition(window.getSize().x - 10.f, 10.f);
+		sf::Vector2f viewSize = window.getView().getSize();
+		uiState.inputHintText.setPosition(viewSize.x - 10.f, 10.f);
 		window.draw(uiState.inputHintText);
 
 		if (uiState.isGameOverTextVisible)
 		{
-			uiState.gameOverText.setPosition(window.getSize().x / 2.f, window.getSize().y / 2.f);
+			uiState.gameOverText.setPosition(viewSize.x / 2.f, viewSize.y / 2.f);
 			window.draw(uiState.gameOverText);
 
-			uiState.recordsTableText.setPosition(window.getSize().x / 2.f, 30.f);
+			uiState.recordsTableText.setPosition(viewSize.x / 2.f, 30.f);
 			window.draw(uiState.recordsTableText);
 
-			uiState.optionsText.setPosition(window.getSize().x / 2.f, window.getSize().y - 10.f);
+			uiState.optionsText.setPosition(viewSize.x / 2.f, viewSize.y - 10.f);
 			window.draw(uiState.optionsText);
 		}
 	}
