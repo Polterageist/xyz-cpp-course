@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Algorythms.cpp" />
     <ClCompile Include="LearnAssymptoticAnalysis.cpp" />
+    <ClCompile Include="LearnFIFOLIFO.cpp" />
     <ClCompile Include="LearnSearchAndStd.cpp" />
     <ClCompile Include="LearnTuringMachine.cpp" />
     <ClCompile Include="LearnSorts.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LearnAssymptoticAnalysis.h" />
+    <ClInclude Include="LearnFIFOLIFO.h" />
     <ClInclude Include="LearnSearchAndStd.h" />
     <ClInclude Include="LearnSorts.h" />
     <ClInclude Include="LearnTuringMachine.h" />
