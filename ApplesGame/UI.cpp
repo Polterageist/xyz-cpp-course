@@ -37,23 +37,23 @@ namespace ApplesGame
 		uiState.recordsTableText.setOrigin(GetTextOrigin(uiState.recordsTableText, { 0.5f, 0.f }));
 	}
 
-	void UpdateUI(UIState& uiState, const struct GameState& gameState, float timeDelta)
+	void UpdateUI(UIState& uiState, const Game& game, float timeDelta)
 	{
-		uiState.scoreText.setString("Apples eaten: " + std::to_string(gameState.numEatenApples));
+		uiState.scoreText.setString("Apples eaten: " + std::to_string(game.numEatenApples));
 
-		uiState.isGameOverTextVisible = gameState.isGameOver;
-		sf::Color gameOverTextColor = (int)gameState.timeSinceGameOver % 2? sf::Color::Red : sf::Color::Yellow;
+		uiState.isGameOverTextVisible = GetCurrentGameState(game) == GameState::GameOver;
+		sf::Color gameOverTextColor = (int)game.timeSinceGameOver % 2? sf::Color::Red : sf::Color::Yellow;
 		uiState.gameOverText.setFillColor(gameOverTextColor);
 		
 		uiState.recordsTableText.setString("Records:");
-		for (const RecordsTableItem& item : gameState.recordsTable)
+		for (const RecordsTableItem& item : game.recordsTable)
 		{
 			uiState.recordsTableText.setString(uiState.recordsTableText.getString() + "\n" + item.name + ": " + std::to_string(item.score));
 		}
 		uiState.recordsTableText.setOrigin(GetTextOrigin(uiState.recordsTableText, { 0.5f, 0.f }));
 
-		bool isInfiniteApples = ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples) != (std::uint8_t)GameOptions::Empty;
-		bool isWithAcceleration = ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::WithAcceleration) != (std::uint8_t)GameOptions::Empty;
+		bool isInfiniteApples = ((std::uint8_t)game.options & (std::uint8_t)GameOptions::InfiniteApples) != (std::uint8_t)GameOptions::Empty;
+		bool isWithAcceleration = ((std::uint8_t)game.options & (std::uint8_t)GameOptions::WithAcceleration) != (std::uint8_t)GameOptions::Empty;
 		std::string optionsText = "Press 1 to toggle infinite apples: " + std::string(isInfiniteApples ? "ON" : "OFF") + "\n"
 			+ "Press 2 to toggle acceleration: " + std::string(isWithAcceleration ? "ON" : "OFF") + "\n"
 			+ "Press Space to restart game";

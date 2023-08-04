@@ -18,8 +18,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEGHT), "AppleGame");
 
 	// We now use too much memory for stack, so we need to allocate it on heap
-	ApplesGame::GameState* gameState = new ApplesGame::GameState();
-	InitGame(*gameState);
+	ApplesGame::Game* game = new ApplesGame::Game();
+	InitGame(*game);
 
 	// Init game clock
 	sf::Clock game_clock;
@@ -28,7 +28,7 @@ int main()
 	// Game loop
 	while (window.isOpen())
 	{
-		HandleWindowEvents(*gameState, window);
+		HandleWindowEvents(*game, window);
 
 		if (!window.isOpen())
 		{
@@ -39,21 +39,21 @@ int main()
 		sf::Time currentTime = game_clock.getElapsedTime();
 		float timeDelta = currentTime.asSeconds() - lastTime.asSeconds();
 		lastTime = currentTime;
-		UpdateGame(*gameState, timeDelta);
+		UpdateGame(*game, timeDelta);
 
 		// Draw everything here
 		// Clear the window first
 		window.clear();
 
-		DrawGame(*gameState, window);
+		DrawGame(*game, window);
 
 		// End the current frame, display window contents on screen
 		window.display();
 	}
 
-	ShutdownGame(*gameState);
-	delete gameState;
-	gameState = nullptr;
+	ShutdownGame(*game);
+	delete game;
+	game = nullptr;
 
 	return 0;
 }
