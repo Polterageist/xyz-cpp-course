@@ -5,6 +5,7 @@
 #include "LearnSearchAndStd.h"
 #include "LearnSorts.h"
 #include "LearnVector.h"
+#include "LearnFIFOLIFO.h"
 
 
 int main()
@@ -25,4 +26,7 @@ int main()
 
 	// Lesson 2-3-1
 	LearnVector();
+
+	// Lesson 2-3-2
+	LearnFIFOLIFO();
 }
