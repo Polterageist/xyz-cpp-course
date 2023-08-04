@@ -6,6 +6,7 @@
 #include "LearnSorts.h"
 #include "LearnVector.h"
 #include "LearnFIFOLIFO.h"
+#include "LearnList.h"
 
 
 int main()
@@ -29,4 +30,7 @@ int main()
 
 	// Lesson 2-3-2
 	LearnFIFOLIFO();
+
+	// Lesson 2-3-3
+	LearnList();
 }
