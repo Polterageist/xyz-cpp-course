@@ -15,6 +15,6 @@ namespace ApplesGame
 	};
 
 	void InitUI(UIState& uiState, const sf::Font& font);
-	void UpdateUI(UIState& uiState, const struct GameState& gameState, float timeDelta);
+	void UpdateUI(UIState& uiState, const struct Game& game, float timeDelta);
 	void DrawUI(UIState& uiState, sf::RenderWindow& window);
 }

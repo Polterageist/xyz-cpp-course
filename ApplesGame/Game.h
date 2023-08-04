@@ -25,7 +25,14 @@ namespace ApplesGame
 
 	bool operator<(const RecordsTableItem& lhs, const RecordsTableItem& rhs);
 
-	struct GameState
+	enum class GameState
+	{
+		None = 0,
+		Playing,
+		GameOver,
+	};
+
+	struct Game
 	{
 		GameOptions options = GameOptions::Default;
 		Player player;
@@ -34,7 +41,8 @@ namespace ApplesGame
 
 		int numEatenApples = 0;
 		UIState uiState;
-		bool isGameOver = false;
+		std::vector<GameState> gameStateStack;
+
 		float timeSinceGameOver = 0.f;
 		RecordsTableItem recordsTable[MAX_RECORDS_TABLE_SIZE];
 
@@ -44,10 +52,26 @@ namespace ApplesGame
 		sf::Texture appleTexture;
 	};
 
-	void InitGame(GameState& gameState);
-	void RestartGame(GameState& gameState);
-	void HandleWindowEvents(GameState& gameState, sf::RenderWindow& window);
-	void UpdateGame(GameState& gameState, float timeDelta);
-	void DrawGame(GameState& gameState, sf::RenderWindow& window);
-	void ShutdownGame(GameState& gameState);
+	void HandleWindowEvents(Game& game, sf::RenderWindow& window);
+	void InitGame(Game& game);
+	void UpdateGame(Game& game, float timeDelta);
+	void RestartGame(Game& game);
+	void DrawGame(Game& game, sf::RenderWindow& window);
+	void ShutdownGame(Game& game);
+
+	void PushGameState(Game& game, GameState state);
+	void PopGameState(Game& game);
+	void SwitchGameState(Game& game, GameState newState);
+	void SwitchGameStateInternal(Game& game, GameState oldState, GameState newState);
+	GameState GetCurrentGameState(const Game& game);
+
+	void InitPlayingState(Game& game);
+	void UpdatePlayingState(Game& game, float timeDelta);
+	void ShutdownPlayingState(Game& game);
+
+	void InitGameOverState(Game& game);
+	void UpdateGameOverState(Game& game, float timeDelta);
+	void ShutdownGameOverState(Game& game);
+
+	
 }

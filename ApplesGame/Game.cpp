@@ -9,48 +9,33 @@ namespace ApplesGame
 		return lhs.score > rhs.score;
 	}
 
-	void InitGame(GameState& gameState)
+	void InitGame(Game& game)
 	{
 		// Init game resources (terminate if error)
-		assert(gameState.playerTexture.loadFromFile(RESOURCES_PATH + "Pacman.png"));
-		assert(gameState.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
-		assert(gameState.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
+		assert(game.playerTexture.loadFromFile(RESOURCES_PATH + "Pacman.png"));
+		assert(game.appleTexture.loadFromFile(RESOURCES_PATH + "Apple.png"));
+		assert(game.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
 
 		// Generate fake records table
-		gameState.recordsTable[0] = { "John", MAX_APPLES };
-		gameState.recordsTable[1] = { "Alice", MAX_APPLES / 2 };
-		gameState.recordsTable[2] = { "Bob", MAX_APPLES / 3 };
-		gameState.recordsTable[3] = { "Clementine", MAX_APPLES / 4 };
-		gameState.recordsTable[4] = { "You", 0 };
+		game.recordsTable[0] = { "John", MAX_APPLES };
+		game.recordsTable[1] = { "Alice", MAX_APPLES / 2 };
+		game.recordsTable[2] = { "Bob", MAX_APPLES / 3 };
+		game.recordsTable[3] = { "Clementine", MAX_APPLES / 4 };
+		game.recordsTable[4] = { "You", 0 };
 
-		InitUI(gameState.uiState, gameState.font);
-		RestartGame(gameState);
+		game.gameStateStack.push_back(GameState::Playing);
+
+		InitUI(game.uiState, game.font);
+
+		PushGameState(game, GameState::Playing);
 	}
 
-	void RestartGame(GameState& gameState)
+	void RestartGame(Game& game)
 	{
-		gameState.apples.clear();
-		
-		// Init player
-		InitPlayer(gameState.player, gameState.playerTexture);
-		// Init apples
-		ClearApplesGrid(gameState.applesGrid);
-		int numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
-		gameState.apples.resize(numApples);
-		for (Apple& apple : gameState.apples)
-		{
-			InitApple(apple, gameState.appleTexture);
-			ResetAppleState(apple);
-			AddAppleToGrid(gameState.applesGrid, apple);
-		}
-
-		// Init game state
-		gameState.numEatenApples = 0;
-		gameState.isGameOver = false;
-		gameState.timeSinceGameOver = 0.f;
+		SwitchGameState(game, GameState::Playing);
 	}
 
-	void HandleWindowEvents(GameState& gameState, sf::RenderWindow& window)
+	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -65,19 +50,19 @@ namespace ApplesGame
 				window.close();
 			}
 
-			if (gameState.isGameOver && (event.type == sf::Event::KeyPressed))
+			if (GetCurrentGameState(game) == GameState::GameOver && (event.type == sf::Event::KeyPressed))
 			{
 				if (event.key.code == sf::Keyboard::Space)
 				{
-					RestartGame(gameState);
+					RestartGame(game);
 				}
 				else if (event.key.code == sf::Keyboard::Num1)
 				{
-					gameState.options = (GameOptions)((std::uint8_t)gameState.options ^ (std::uint8_t)GameOptions::InfiniteApples);
+					game.options = (GameOptions)((std::uint8_t)game.options ^ (std::uint8_t)GameOptions::InfiniteApples);
 				}
 				else if (event.key.code == sf::Keyboard::Num2)
 				{
-					gameState.options = (GameOptions)((std::uint8_t)gameState.options ^ (std::uint8_t)GameOptions::WithAcceleration);
+					game.options = (GameOptions)((std::uint8_t)game.options ^ (std::uint8_t)GameOptions::WithAcceleration);
 				}
 
 				// We don't handle input in game over state
@@ -87,111 +72,252 @@ namespace ApplesGame
 		}
 	}
 
-	void HandleInput(GameState& gameState)
+	void UpdateGame(Game& game, float timeDelta)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		GameState gameState = game.gameStateStack.back();
+		switch (gameState)
 		{
-			gameState.player.direction = PlayerDirection::Up;
+		case ApplesGame::GameState::Playing:
+			UpdatePlayingState(game, timeDelta);
+			break;
+		case ApplesGame::GameState::GameOver:
+			UpdateGameOverState(game, timeDelta);
+			break;
+		default:
+			break;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			gameState.player.direction = PlayerDirection::Right;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			gameState.player.direction = PlayerDirection::Down;
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			gameState.player.direction = PlayerDirection::Left;
-		}
+
+		UpdateUI(game.uiState, game, timeDelta);
 	}
 
-	void UpdateGame(GameState& gameState, float timeDelta)
+	void PushGameState(Game& game, GameState state)
 	{
-		if (!gameState.isGameOver)
+		GameState oldState = GameState::None;
+		if (game.gameStateStack.size() > 0)
 		{
-			HandleInput(gameState);
+			oldState = game.gameStateStack.back();
+		}
 
-			// Update player
-			UpdatePlayer(gameState.player, timeDelta);
+		SwitchGameStateInternal(game, oldState, state);
+		game.gameStateStack.push_back(state);
+	}
 
-			Apple* collidingApples[MAX_APPLES_IN_CELL] = { nullptr };
-			int numCollidingApples = 0;
+	void PopGameState(Game& game)
+	{
+		GameState oldState = GameState::None;
+		if (game.gameStateStack.size() > 0)
+		{
+			oldState = game.gameStateStack.back();
+		}
 
-			if (FindPlayerCollisionWithApples(gameState.player.position, gameState.applesGrid, collidingApples, numCollidingApples))
-			{
-				for (int i = 0; i < numCollidingApples; i++)
-				{
-					if ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples)
-					{
-						// Move apple to a new random position
-						ResetAppleState(*collidingApples[i]);
-						AddAppleToGrid(gameState.applesGrid, *collidingApples[i]);
-					}
-					else
-					{
-						// Mark apple as eaten
-						MarkAppleAsEaten(*collidingApples[i]);
-						RemoveAppleFromGrid(gameState.applesGrid, *collidingApples[i]);
-					}
+		game.gameStateStack.pop_back();
+		GameState state = GameState::None;
+		if (game.gameStateStack.size() > 0)
+		{
+			state = game.gameStateStack.back();
+		}
 
-					// Increase eaten apples counter
-					gameState.numEatenApples++;
-					// Increase player speed
-					if ((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::WithAcceleration)
-					{
-						gameState.player.speed += ACCELERATION;
-					}
-				}
-			}
+		SwitchGameStateInternal(game, oldState, state);
+	}
 
-			bool isGameFinished = (gameState.numEatenApples == gameState.apples.size()) 
-				&& !((std::uint8_t)gameState.options & (std::uint8_t)GameOptions::InfiniteApples);
-			// Check collision with screen border
-			if (isGameFinished || HasPlayerCollisionWithScreenBorder(gameState.player))
-			{
-				gameState.isGameOver = true;
-				gameState.timeSinceGameOver = 0.f;
-
-				// Find player in records table and update his score
-				for (RecordsTableItem& item : gameState.recordsTable)
-				{
-					if (item.name == "You")
-					{
-						item.score = gameState.numEatenApples;
-						break;
-					}
-				}
-
-				// Sort records table
-				std::sort(std::begin(gameState.recordsTable), std::end(gameState.recordsTable));
-			}
+	void SwitchGameState(Game& game, GameState newState)
+	{
+		if (game.gameStateStack.size() > 0)
+		{
+			GameState oldState = game.gameStateStack.back();
+			game.gameStateStack.pop_back();
+			game.gameStateStack.push_back(newState);
+			SwitchGameStateInternal(game, oldState, newState);
 		}
 		else
 		{
-			gameState.timeSinceGameOver += timeDelta;
+			PushGameState(game, newState);
 		}
-
-		UpdateUI(gameState.uiState, gameState, timeDelta);
 	}
 
-	void DrawGame(GameState& gameState, sf::RenderWindow& window)
+	void SwitchGameStateInternal(Game& game, GameState oldState, GameState newState)
+	{
+		switch (oldState)
+		{
+		case GameState::Playing:
+		{
+			ShutdownPlayingState(game);
+			break;
+		}
+		case GameState::GameOver:
+		{
+			ShutdownGameOverState(game);
+			break;
+		}
+		}
+
+		switch (newState)
+		{
+		case ApplesGame::GameState::Playing:
+			InitPlayingState(game);
+			break;
+		case ApplesGame::GameState::GameOver:
+			InitGameOverState(game);
+			break;
+		default:
+			break;
+		}
+	}
+
+	GameState GetCurrentGameState(const Game& game)
+	{
+		if (game.gameStateStack.size() > 0)
+		{
+			return game.gameStateStack.back();
+		}
+		else
+		{
+			return GameState::None;
+		}
+	}
+
+	void HandleInput(Game& game)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			game.player.direction = PlayerDirection::Up;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			game.player.direction = PlayerDirection::Right;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+			game.player.direction = PlayerDirection::Down;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			game.player.direction = PlayerDirection::Left;
+		}
+	}
+
+	void InitPlayingState(Game& game)
+	{
+		game.apples.clear();
+
+		// Init player
+		InitPlayer(game.player, game.playerTexture);
+		// Init apples
+		ClearApplesGrid(game.applesGrid);
+		int numApples = MIN_APPLES + rand() % (MAX_APPLES + 1 - MIN_APPLES);
+		game.apples.resize(numApples);
+		for (Apple& apple : game.apples)
+		{
+			InitApple(apple, game.appleTexture);
+			ResetAppleState(apple);
+			AddAppleToGrid(game.applesGrid, apple);
+		}
+
+		// Init game state
+		game.numEatenApples = 0;
+	}
+
+	void UpdatePlayingState(Game& game, float timeDelta)
+	{
+		HandleInput(game);
+
+		// Update player
+		UpdatePlayer(game.player, timeDelta);
+
+		Apple* collidingApples[MAX_APPLES_IN_CELL] = { nullptr };
+		int numCollidingApples = 0;
+
+		if (FindPlayerCollisionWithApples(game.player.position, game.applesGrid, collidingApples, numCollidingApples))
+		{
+			for (int i = 0; i < numCollidingApples; i++)
+			{
+				if ((std::uint8_t)game.options & (std::uint8_t)GameOptions::InfiniteApples)
+				{
+					// Move apple to a new random position
+					ResetAppleState(*collidingApples[i]);
+					AddAppleToGrid(game.applesGrid, *collidingApples[i]);
+				}
+				else
+				{
+					// Mark apple as eaten
+					MarkAppleAsEaten(*collidingApples[i]);
+					RemoveAppleFromGrid(game.applesGrid, *collidingApples[i]);
+				}
+
+				// Increase eaten apples counter
+				game.numEatenApples++;
+				// Increase player speed
+				if ((std::uint8_t)game.options & (std::uint8_t)GameOptions::WithAcceleration)
+				{
+					game.player.speed += ACCELERATION;
+				}
+			}
+		}
+
+		bool isGameFinished = (game.numEatenApples == game.apples.size())
+			&& !((std::uint8_t)game.options & (std::uint8_t)GameOptions::InfiniteApples);
+		// Check collision with screen border
+		if (isGameFinished || HasPlayerCollisionWithScreenBorder(game.player))
+		{
+			game.gameStateStack.push_back(GameState::GameOver);
+			game.timeSinceGameOver = 0.f;
+
+			// Find player in records table and update his score
+			for (RecordsTableItem& item : game.recordsTable)
+			{
+				if (item.name == "You")
+				{
+					item.score = game.numEatenApples;
+					break;
+				}
+			}
+
+			// Sort records table
+			std::sort(std::begin(game.recordsTable), std::end(game.recordsTable));
+		}
+	}
+
+	void ShutdownPlayingState(Game& game)
+	{
+
+	}
+
+	void InitGameOverState(Game& game)
+	{
+		game.timeSinceGameOver = 0.f;
+	}
+
+	void UpdateGameOverState(Game& game, float timeDelta)
+	{
+		game.timeSinceGameOver += timeDelta;
+	}
+
+	void ShutdownGameOverState(Game& game)
+	{
+
+	}
+
+	void DrawGame(Game& game, sf::RenderWindow& window)
 	{
 		// Draw player
-		DrawPlayer(gameState.player, window);
+		DrawPlayer(game.player, window);
 		// Draw apples
-		for (Apple& apple: gameState.apples)
+		for (Apple& apple: game.apples)
 		{
 			DrawApple(apple, window);
 		}
 
-		DrawUI(gameState.uiState, window);
+		DrawUI(game.uiState, window);
 	}
 
-	void ShutdownGame(GameState& gameState)
+	void ShutdownGame(Game& game)
 	{
-
+		while (game.gameStateStack.size() > 0)
+		{
+			PopGameState(game);
+		}
 	}
+
+
 
 }
