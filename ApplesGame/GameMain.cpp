@@ -15,7 +15,7 @@ int main()
 	srand(seed);
 
 	// Init window
-	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEGHT), "AppleGame");
+	sf::RenderWindow window(sf::VideoMode(ApplesGame::SCREEN_WIDTH, ApplesGame::SCREEN_HEGHT), "AppleGame");
 
 	// We now use too much memory for stack, so we need to allocate it on heap
 	ApplesGame::Game* game = new ApplesGame::Game();
@@ -39,16 +39,21 @@ int main()
 		sf::Time currentTime = game_clock.getElapsedTime();
 		float timeDelta = currentTime.asSeconds() - lastTime.asSeconds();
 		lastTime = currentTime;
-		UpdateGame(*game, timeDelta);
-
-		// Draw everything here
+		if (UpdateGame(*game, timeDelta))
+		{
+			// Draw everything here
 		// Clear the window first
-		window.clear();
+			window.clear();
 
-		DrawGame(*game, window);
+			DrawGame(*game, window);
 
-		// End the current frame, display window contents on screen
-		window.display();
+			// End the current frame, display window contents on screen
+			window.display();
+		}
+		else
+		{
+			window.close();
+		}
 	}
 
 	ShutdownGame(*game);
