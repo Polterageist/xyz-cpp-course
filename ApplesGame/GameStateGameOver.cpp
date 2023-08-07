@@ -15,19 +15,19 @@ namespace ApplesGame
 		data.gameOverText.setStyle(sf::Text::Bold);
 		data.gameOverText.setFillColor(sf::Color::Red);
 		data.gameOverText.setString("GAME OVER");
-		data.gameOverText.setOrigin(GetTextOrigin(data.gameOverText, { 0.5f, 0.5f }));
+		data.gameOverText.setOrigin(GetItemOrigin(data.gameOverText, { 0.5f, 0.5f }));
 		
-		data.optionsText.setFont(data.font);
-		data.optionsText.setCharacterSize(24);
-		data.optionsText.setFillColor(sf::Color::White);
-		data.optionsText.setString("Press 1 to toggle infinite apples, 2 to toggle acceleration, Space to restart");
-		data.optionsText.setOrigin(GetTextOrigin(data.optionsText, { 0.5f, 1.f }));
-		
+		data.hintText.setFont(data.font);
+		data.hintText.setCharacterSize(24);
+		data.hintText.setFillColor(sf::Color::White);
+		data.hintText.setString("Press Space to restart");
+		data.hintText.setOrigin(GetItemOrigin(data.hintText, { 0.5f, 1.f }));
+
 		data.recordsTableText.setFont(data.font);
 		data.recordsTableText.setCharacterSize(24);
 		data.recordsTableText.setFillColor(sf::Color::Green);
 		data.recordsTableText.setString("Records:\nPlayer: 999\nPlayer: 999\nPlayer: 999\nPlayer: 999\nPlayer: 999");
-		data.recordsTableText.setOrigin(GetTextOrigin(data.recordsTableText, { 0.5f, 0.f }));
+		data.recordsTableText.setOrigin(GetItemOrigin(data.recordsTableText, { 0.5f, 0.f }));
 	}
 
 	void ShutdownGameStateGameOver(GameStateGameOverData& data, Game& game)
@@ -45,16 +45,7 @@ namespace ApplesGame
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
 			{
-				// Exit the game
-				PushGameState(game, GameStateType::ExitDialog, true);
-			}
-			else if (event.key.code == sf::Keyboard::Num1)
-			{
-				game.options = (GameOptions)((std::uint8_t)game.options ^ (std::uint8_t)GameOptions::InfiniteApples);
-			}
-			else if (event.key.code == sf::Keyboard::Num2)
-			{
-				game.options = (GameOptions)((std::uint8_t)game.options ^ (std::uint8_t)GameOptions::WithAcceleration);
+				SwitchGameState(game, GameStateType::MainMenu);
 			}
 		}
 	}
@@ -71,15 +62,7 @@ namespace ApplesGame
 		{
 			data.recordsTableText.setString(data.recordsTableText.getString() + "\n" + item.name + ": " + std::to_string(item.score));
 		}
-		data.recordsTableText.setOrigin(GetTextOrigin(data.recordsTableText, { 0.5f, 0.f }));
-
-		bool isInfiniteApples = ((std::uint8_t)game.options & (std::uint8_t)GameOptions::InfiniteApples) != (std::uint8_t)GameOptions::Empty;
-		bool isWithAcceleration = ((std::uint8_t)game.options & (std::uint8_t)GameOptions::WithAcceleration) != (std::uint8_t)GameOptions::Empty;
-		std::string optionsText = "Press 1 to toggle infinite apples: " + std::string(isInfiniteApples ? "ON" : "OFF") + "\n"
-			+ "Press 2 to toggle acceleration: " + std::string(isWithAcceleration ? "ON" : "OFF") + "\n"
-			+ "Press Space to restart game";
-		data.optionsText.setString(optionsText);
-		data.optionsText.setOrigin(GetTextOrigin(data.optionsText, { 0.5f, 1.f }));
+		data.recordsTableText.setOrigin(GetItemOrigin(data.recordsTableText, { 0.5f, 0.f }));
 	}
 
 	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
@@ -92,7 +75,7 @@ namespace ApplesGame
 		data.recordsTableText.setPosition(viewSize.x / 2.f, 30.f);
 		window.draw(data.recordsTableText);
 
-		data.optionsText.setPosition(viewSize.x / 2.f, viewSize.y - 10.f);
-		window.draw(data.optionsText);
+		data.hintText.setPosition(viewSize.x / 2.f, viewSize.y - 10.f);
+		window.draw(data.hintText);
 	}
 }

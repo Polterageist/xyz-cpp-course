@@ -4,6 +4,7 @@
 #include "GameStatePlaying.h"
 #include "GameStateGameOver.h"
 #include "GameStateExitDialog.h"
+#include "GameStateMainMenu.h"
 
 namespace ApplesGame
 {
@@ -24,7 +25,7 @@ namespace ApplesGame
 		game.gameStateChangeType = GameStateChangeType::None;
 		game.pendingGameStateType = GameStateType::None;
 		game.pendingGameStateIsExclusivelyVisible = false;
-		SwitchGameState(game, GameStateType::Playing);
+		SwitchGameState(game, GameStateType::MainMenu);
 	}
 
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
@@ -146,6 +147,12 @@ namespace ApplesGame
 	{
 		switch (state.type)
 		{
+		case GameStateType::MainMenu:
+		{
+			state.data = new GameStateMainMenuData();
+			InitGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
+			break;
+		}
 		case GameStateType::Playing:
 		{
 			state.data = new GameStatePlayingData();
@@ -174,6 +181,12 @@ namespace ApplesGame
 	{
 		switch (state.type)
 		{
+		case GameStateType::MainMenu:
+		{
+			ShutdownGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
+			delete (GameStateMainMenuData*)state.data;
+			break;
+		}
 		case GameStateType::Playing:
 		{
 			ShutdownGameStatePlaying(*(GameStatePlayingData*)state.data, game);
@@ -196,12 +209,19 @@ namespace ApplesGame
 			assert(false); // We want to know if we forgot to implement new game statee
 			break;
 		}
+
+		state.data = nullptr;
 	}
 
 	void HandleWindowEventGameState(Game& game, GameState& state, sf::Event& event)
 	{
 		switch (state.type)
 		{
+		case GameStateType::MainMenu:
+		{
+			HandleGameStateMainMenuWindowEvent(*(GameStateMainMenuData*)state.data, game, event);
+			break;
+		}
 		case GameStateType::Playing:
 		{
 			HandleGameStatePlayingWindowEvent(*(GameStatePlayingData*)state.data, game, event);
@@ -227,6 +247,11 @@ namespace ApplesGame
 	{
 		switch (state.type)
 		{
+		case GameStateType::MainMenu:
+		{
+			UpdateGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, timeDelta);
+			break;
+		}
 		case GameStateType::Playing:
 		{
 			UpdateGameStatePlaying(*(GameStatePlayingData*)state.data, game, timeDelta);
@@ -252,6 +277,11 @@ namespace ApplesGame
 	{
 		switch (state.type)
 		{
+		case GameStateType::MainMenu:
+		{
+			DrawGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, window);
+			break;
+		}
 		case GameStateType::Playing:
 		{
 			DrawGameStatePlaying(*(GameStatePlayingData*)state.data, game, window);

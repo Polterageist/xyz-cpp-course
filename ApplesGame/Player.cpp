@@ -16,7 +16,7 @@ namespace ApplesGame
 
 		// Init sprite
 		player.sprite.setTexture(texture);
-		player.sprite.setOrigin(GetSpriteOrigin(player.sprite, {0.5f, 0.5f})); // We need to use texture as origin ignores scale
+		player.sprite.setOrigin(GetItemOrigin(player.sprite, {0.5f, 0.5f})); // We need to use texture as origin ignores scale
 		player.sprite.setScale(GetSpriteScale(player.sprite, {PLAYER_SIZE, PLAYER_SIZE}));
 	}
 

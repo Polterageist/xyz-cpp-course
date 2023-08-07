@@ -14,7 +14,7 @@ namespace ApplesGame
 
 		// UI data
 		sf::Text gameOverText;
-		sf::Text optionsText;
+		sf::Text hintText;
 		sf::Text recordsTableText;
 	};
 

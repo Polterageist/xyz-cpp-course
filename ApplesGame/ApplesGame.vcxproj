@@ -163,7 +163,9 @@
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="GameStateExitDialog.cpp" />
     <ClCompile Include="GameStateGameOver.cpp" />
+    <ClCompile Include="GameStateMainMenu.cpp" />
     <ClCompile Include="GameStatePlaying.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
@@ -173,7 +175,9 @@
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameStateExitDialog.h" />
     <ClInclude Include="GameStateGameOver.h" />
+    <ClInclude Include="GameStateMainMenu.h" />
     <ClInclude Include="GameStatePlaying.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayingState.h" />

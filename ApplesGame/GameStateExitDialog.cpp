@@ -8,11 +8,11 @@ namespace ApplesGame
 	{
 		assert(data.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
 
-		data.hintText.setString("Are you sure you want to exit? Enter - Yes, Esc - No");
+		data.hintText.setString("Are you sure you want to stop this game? Enter - Yes, Esc - No");
 		data.hintText.setFont(data.font);
 		data.hintText.setCharacterSize(24);
 		data.hintText.setFillColor(sf::Color::White);
-		data.hintText.setOrigin(GetTextOrigin(data.hintText, { 0.5f, 0.5f }));
+		data.hintText.setOrigin(GetItemOrigin(data.hintText, { 0.5f, 0.5f }));
 
 		data.background.setFillColor(sf::Color(0, 0, 0, 128)); // Semi-transparent black
 	}
@@ -32,7 +32,7 @@ namespace ApplesGame
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
 			{
-				SwitchGameState(game, GameStateType::None);
+				SwitchGameState(game, GameStateType::MainMenu);
 			}
 		}
 	}
