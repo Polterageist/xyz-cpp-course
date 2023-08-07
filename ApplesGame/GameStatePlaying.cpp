@@ -36,7 +36,7 @@ namespace ApplesGame
 		data.inputHintText.setCharacterSize(24);
 		data.inputHintText.setFillColor(sf::Color::White);
 		data.inputHintText.setString("Use arrow keys to move, ESC to exit");
-		data.inputHintText.setOrigin(GetTextOrigin(data.inputHintText, { 1.f, 0.f }));
+		data.inputHintText.setOrigin(GetItemOrigin(data.inputHintText, { 1.f, 0.f }));
 	}
 
 	void ShutdownGameStatePlaying(GameStatePlayingData& data, Game& game)

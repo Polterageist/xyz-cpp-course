@@ -27,9 +27,10 @@ namespace ApplesGame
 	enum class GameStateType
 	{
 		None = 0,
+		MainMenu,
 		Playing,
 		GameOver,
-		ExitDialog
+		ExitDialog,
 	};
 
 	struct GameState
