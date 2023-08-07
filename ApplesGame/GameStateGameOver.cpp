@@ -58,9 +58,9 @@ namespace ApplesGame
 		data.gameOverText.setFillColor(gameOverTextColor);
 
 		data.recordsTableText.setString("Records:");
-		for (const RecordsTableItem& item : game.recordsTable)
+		for (const auto& item : game.recordsTable)
 		{
-			data.recordsTableText.setString(data.recordsTableText.getString() + "\n" + item.name + ": " + std::to_string(item.score));
+			data.recordsTableText.setString(data.recordsTableText.getString() + "\n" + item.first + ": " + std::to_string(item.second));
 		}
 		data.recordsTableText.setOrigin(GetItemOrigin(data.recordsTableText, { 0.5f, 0.f }));
 	}

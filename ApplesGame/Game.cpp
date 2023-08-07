@@ -8,19 +8,17 @@
 
 namespace ApplesGame
 {
-	bool operator<(const RecordsTableItem& lhs, const RecordsTableItem& rhs)
-	{
-		return lhs.score > rhs.score;
-	}
-
 	void InitGame(Game& game)
 	{
 		// Generate fake records table
-		game.recordsTable[0] = { "John", MAX_APPLES };
-		game.recordsTable[1] = { "Alice", MAX_APPLES / 2 };
-		game.recordsTable[2] = { "Bob", MAX_APPLES / 3 };
-		game.recordsTable[3] = { "Clementine", MAX_APPLES / 4 };
-		game.recordsTable[4] = { "You", 0 };
+		game.recordsTable =
+		{
+			{"John", MAX_APPLES },
+			{"Jane", MAX_APPLES / 2 },
+			{"Alice", MAX_APPLES / 3 },
+			{"Bob", MAX_APPLES / 4 },
+			{"Clementine", MAX_APPLES / 5 },
+		};
 
 		game.gameStateChangeType = GameStateChangeType::None;
 		game.pendingGameStateType = GameStateType::None;
