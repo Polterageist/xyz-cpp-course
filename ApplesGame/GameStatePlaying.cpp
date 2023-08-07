@@ -113,17 +113,7 @@ namespace ApplesGame
 		if (isGameFinished || HasPlayerCollisionWithScreenBorder(data.player))
 		{
 			// Find player in records table and update his score
-			for (RecordsTableItem& item : game.recordsTable)
-			{
-				if (item.name == "You")
-				{
-					item.score = data.numEatenApples;
-					break;
-				}
-			}
-
-			// Sort records table
-			std::sort(std::begin(game.recordsTable), std::end(game.recordsTable));
+			game.recordsTable["Player"] = std::max(game.recordsTable["Player"], data.numEatenApples);
 
 			PushGameState(game, GameStateType::GameOver, false);
 		}

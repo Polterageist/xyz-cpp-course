@@ -16,14 +16,6 @@ namespace ApplesGame
 		Empty = 0
 	};
 
-	struct RecordsTableItem
-	{
-		std::string name;
-		int score = 0;
-	};
-
-	bool operator<(const RecordsTableItem& lhs, const RecordsTableItem& rhs);
-
 	enum class GameStateType
 	{
 		None = 0,
@@ -56,7 +48,7 @@ namespace ApplesGame
 		bool pendingGameStateIsExclusivelyVisible = false;
 
 		GameOptions options = GameOptions::Default;
-		RecordsTableItem recordsTable[MAX_RECORDS_TABLE_SIZE];
+		std::map<std::string, int> recordsTable;
 	};
 
 	
