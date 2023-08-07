@@ -6,7 +6,7 @@
 void PrintSTDMap(const std::map<std::string, std::string>& map)
 {
 	std::cout << "Map content:" << std::endl;
-	// Items in the map are std::pair
+	// Items in the map are std::pair and appear in sorted order
 	for (const std::pair<std::string, std::string>& item : map)
 	{
 		std::cout << item.first << ": " << item.second << std::endl;

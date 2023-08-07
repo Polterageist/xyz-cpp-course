@@ -135,6 +135,7 @@
     <ClCompile Include="LearnSearchAndStd.cpp" />
     <ClCompile Include="LearnTuringMachine.cpp" />
     <ClCompile Include="LearnSorts.cpp" />
+    <ClCompile Include="LearnUnorderedMap.cpp" />
     <ClCompile Include="LearnVector.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="TuringMachine.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="LearnSearchAndStd.h" />
     <ClInclude Include="LearnSorts.h" />
     <ClInclude Include="LearnTuringMachine.h" />
+    <ClInclude Include="LearnUnorderedMap.h" />
     <ClInclude Include="LearnVector.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="TuringMachine.h" />
