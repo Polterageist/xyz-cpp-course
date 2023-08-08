@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "GameSettings.h"
 #include "Math.h"
+#include <unordered_map>
+#include <unordered_set>
 
 namespace ApplesGame
 {
@@ -10,9 +12,6 @@ namespace ApplesGame
 		Position position;
 		sf::Sprite sprite;
 		bool isEaten = false;
-
-		struct ApplesGridCell* gridCells[4] = { nullptr };
-		int numGridCells = 0;
 	};
 
 	void InitApple(Apple& apple, const sf::Texture& texture);
@@ -20,19 +19,16 @@ namespace ApplesGame
 	void DrawApple(Apple& apple, sf::RenderWindow& window);
 	void MarkAppleAsEaten(Apple& apple);
 
-	struct ApplesGridCell
-	{
-		Apple* apples[MAX_APPLES_IN_CELL] = { nullptr };
-		int numApplesInCell = 0;
-	};
+	using ApplesSet = std::unordered_set<Apple*>;
 
 	struct ApplesGrid
 	{
-		ApplesGridCell cells[APPLES_GRID_CELLS_HORIZONTAL][APPLES_GRID_CELLS_VERTICAL];
+		std::unordered_map<Vector2Di, ApplesSet> cells;
+		std::unordered_multimap<Apple*, Vector2Di> appleCells;
 	};
 
 	void ClearApplesGrid(ApplesGrid& applesGrid);
 	void AddAppleToGrid(ApplesGrid& applesGrid, Apple& apple);
 	void RemoveAppleFromGrid(ApplesGrid& applesGrid, Apple& apple);
-	bool FindPlayerCollisionWithApples(const Vector2D& playerPosition, const ApplesGrid& grid, Apple** result, int& numFoundApples); // Result should be a pointer to an array of MAX_APPLES / 4 pointers to apples
+	bool FindPlayerCollisionWithApples(const Vector2Df& playerPosition, const ApplesGrid& grid, ApplesSet& result);
 }

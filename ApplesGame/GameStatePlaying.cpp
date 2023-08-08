@@ -77,24 +77,22 @@ namespace ApplesGame
 		// Update player
 		UpdatePlayer(data.player, timeDelta);
 
-		Apple* collidingApples[MAX_APPLES_IN_CELL] = { nullptr };
-		int numCollidingApples = 0;
-
-		if (FindPlayerCollisionWithApples(data.player.position, data.applesGrid, collidingApples, numCollidingApples))
+		ApplesSet collidingApples;
+		if (FindPlayerCollisionWithApples(data.player.position, data.applesGrid, collidingApples))
 		{
-			for (int i = 0; i < numCollidingApples; i++)
+			for (Apple* apple : collidingApples)
 			{
 				if ((std::uint8_t)game.options & (std::uint8_t)GameOptions::InfiniteApples)
 				{
 					// Move apple to a new random position
-					ResetAppleState(*collidingApples[i]);
-					AddAppleToGrid(data.applesGrid, *collidingApples[i]);
+					ResetAppleState(*apple);
+					AddAppleToGrid(data.applesGrid, *apple);
 				}
 				else
 				{
 					// Mark apple as eaten
-					MarkAppleAsEaten(*collidingApples[i]);
-					RemoveAppleFromGrid(data.applesGrid, *collidingApples[i]);
+					MarkAppleAsEaten(*apple);
+					RemoveAppleFromGrid(data.applesGrid, *apple);
 				}
 
 				// Increase eaten apples counter

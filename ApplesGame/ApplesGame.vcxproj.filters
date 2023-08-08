@@ -54,9 +54,6 @@
     <ClInclude Include="Math.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="PlayingState.h">
-      <Filter>Sources</Filter>
-    </ClInclude>
     <ClInclude Include="GameStatePlaying.h">
       <Filter>Sources</Filter>
     </ClInclude>

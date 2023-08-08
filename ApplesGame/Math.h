@@ -3,20 +3,30 @@
 
 namespace ApplesGame
 {
-	struct Vector2D
+	struct Vector2Df
 	{
 		float x = 0.f;
 		float y = 0.f;
 	};
 
-	Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs);
+	Vector2Df operator+(const Vector2Df& lhs, const Vector2Df& rhs);
+	Vector2Df operator-(const Vector2Df& lhs, const Vector2Df& rhs);
 
+	float GetVectorLength(const Vector2Df& vector);
 
-	typedef Vector2D Position;
+	struct Vector2Di
+	{
+		int x = 0;
+		int y = 0;
+	};
 
-	sf::Vector2f OurVectorToSf(const Vector2D& v);
-	sf::Vector2f GetSpriteScale(const sf::Sprite& sprite, const Vector2D& desiredSize);
-	sf::Vector2f GetItemOrigin(const sf::Sprite& sprite, const Vector2D& relativePosition);
+	bool operator==(const Vector2Di& lhs, const Vector2Di& rhs);
+
+	typedef Vector2Df Position;
+
+	sf::Vector2f OurVectorToSf(const Vector2Df& v);
+	sf::Vector2f GetSpriteScale(const sf::Sprite& sprite, const Vector2Df& desiredSize);
+	sf::Vector2f GetItemOrigin(const sf::Sprite& sprite, const Vector2Df& relativePosition);
 	sf::Vector2f GetItemOrigin(const sf::Text& text, const sf::Vector2f& relativePosition);
 
 	// Helper method for organizing text items
@@ -35,5 +45,14 @@ namespace ApplesGame
 
 	void DrawItemsList(sf::RenderWindow& window, const std::vector<sf::Text*>& items, float spacing, Orientation orientation, Alignment alignment, const sf::Vector2f& position, const sf::Vector2f& origin);
 
-	bool IsPointInRect(Vector2D point, Vector2D rectTL, Vector2D rectBR);
+	bool IsPointInRect(Vector2Df point, Vector2Df rectTL, Vector2Df rectBR);
 }
+
+template<>
+struct std::hash<ApplesGame::Vector2Di>
+{
+	std::size_t operator()(const ApplesGame::Vector2Di& v) const noexcept
+	{
+		return std::hash<int>()(v.x) ^ (std::hash<int>()(v.y) << 1);
+	}
+};

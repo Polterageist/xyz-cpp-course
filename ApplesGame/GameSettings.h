@@ -18,7 +18,6 @@ namespace ApplesGame
 
 	const unsigned int APPLES_GRID_CELLS_HORIZONTAL = unsigned(SCREEN_WIDTH / (APPLE_SIZE * 4));
 	const unsigned int APPLES_GRID_CELLS_VERTICAL = unsigned(SCREEN_HEGHT / (APPLE_SIZE * 4));
-	const unsigned int MAX_APPLES_IN_CELL = MAX_APPLES / 4; // We don't expect too much apples in one cell
 
 	const int MAX_RECORDS_TABLE_SIZE = 5;
 }
