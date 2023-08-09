@@ -21,4 +21,5 @@ namespace ApplesGame
 	const unsigned int MAX_APPLES_IN_CELL = MAX_APPLES / 4; // We don't expect too much apples in one cell
 
 	const int MAX_RECORDS_TABLE_SIZE = 5;
+	extern const char* PLAYER_NAME; // We need to define this constant in some SPP
 }

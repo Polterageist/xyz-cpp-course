@@ -113,10 +113,12 @@ namespace ApplesGame
 		if (isGameFinished || HasPlayerCollisionWithScreenBorder(data.player))
 		{
 			// Find player in records table and update his score
-			game.recordsTable["Player"] = std::max(game.recordsTable["Player"], data.numEatenApples);
+			game.recordsTable[PLAYER_NAME] = std::max(game.recordsTable[PLAYER_NAME], data.numEatenApples);
 
 			PushGameState(game, GameStateType::GameOver, false);
 		}
+
+		data.scoreText.setString("Apples eaten: " + std::to_string(data.numEatenApples));
 	}
 
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window)
@@ -129,6 +131,7 @@ namespace ApplesGame
 			DrawApple(apple, window);
 		}
 
+		data.scoreText.setOrigin(GetItemOrigin(data.scoreText, { 0.f, 0.f }));
 		data.scoreText.setPosition(10.f, 10.f);
 		window.draw(data.scoreText);
 

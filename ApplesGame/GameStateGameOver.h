@@ -13,9 +13,10 @@ namespace ApplesGame
 		float timeSinceGameOver = 0.f;
 
 		// UI data
+		sf::RectangleShape background;
 		sf::Text gameOverText;
 		sf::Text hintText;
-		sf::Text recordsTableText;
+		std::vector<sf::Text> recordsTableTexts;
 	};
 
 	// Returns pointer to the allocated data

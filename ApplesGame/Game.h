@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Apple.h"
 #include "GameSettings.h"
+#include <unordered_map>
 
 namespace ApplesGame
 {
@@ -48,7 +49,7 @@ namespace ApplesGame
 		bool pendingGameStateIsExclusivelyVisible = false;
 
 		GameOptions options = GameOptions::Default;
-		std::map<std::string, int> recordsTable;
+		std::unordered_map<std::string, int> recordsTable;
 	};
 
 	
