@@ -24,6 +24,7 @@ namespace ApplesGame
 		Playing,
 		GameOver,
 		ExitDialog,
+		Records,
 	};
 
 	struct GameState

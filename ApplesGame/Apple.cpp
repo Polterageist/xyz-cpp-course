@@ -40,34 +40,18 @@ namespace ApplesGame
 
 	void ClearApplesGrid(ApplesGrid& applesGrid)
 	{
-		for (int i = 0; i < APPLES_GRID_CELLS_HORIZONTAL; i++)
-		{
-			for (int j = 0; j < APPLES_GRID_CELLS_VERTICAL; j++)
-			{
-				ApplesGridCell& cell = applesGrid.cells[i][j];
-				for (int k = 0; k < MAX_APPLES_IN_CELL; k++)
-				{
-					Apple* apple = cell.apples[k];
-					if (apple != nullptr)
-					{
-						for (int i = apple->numGridCells - 1; i >= 0; --i)
-						{
-							apple->gridCells[i] = nullptr;
-						}
-						apple->numGridCells = 0;
-					}
-
-					cell.apples[k] = nullptr;
-				}
-				cell.numApplesInCell = 0;
-			}
-		}
+		applesGrid.appleCells.clear();
+		applesGrid.cells.clear();
 	}
 
 	void AddAppleToGrid(ApplesGrid& applesGrid, Apple& apple)
 	{
-		Vector2D appleCornerTL = apple.position + Vector2D{ -APPLE_SIZE / 2, -APPLE_SIZE / 2 };
-		Vector2D appleCornerBR = apple.position + Vector2D{ APPLE_SIZE / 2, APPLE_SIZE / 2 };
+		// Remove apple from old cells
+		RemoveAppleFromGrid(applesGrid, apple);
+		
+		// Find new cells range
+		Vector2Df appleCornerTL = apple.position + Vector2Df{ -APPLE_SIZE / 2, -APPLE_SIZE / 2 };
+		Vector2Df appleCornerBR = apple.position + Vector2Df{ APPLE_SIZE / 2, APPLE_SIZE / 2 };
 
 		const float cellSizeX = (float)SCREEN_WIDTH / APPLES_GRID_CELLS_HORIZONTAL;
 		const float cellSizeY = (float)SCREEN_WIDTH / APPLES_GRID_CELLS_VERTICAL;
@@ -76,88 +60,31 @@ namespace ApplesGame
 		int minCellY = std::max((int)(appleCornerTL.y / cellSizeY), 0);
 		int maxCellY = std::min((int)(appleCornerBR.y / cellSizeY), (int)APPLES_GRID_CELLS_VERTICAL - 1);
 
-		ApplesGridCell* newCells[4] = {nullptr};
-		int numNewCells = 0;
 		// Add apple to new cells	
 		for (int cellX = minCellX; cellX <= maxCellX; ++cellX)
 		{
 			for (int cellY = minCellY; cellY <= maxCellY; ++cellY)
 			{
-				ApplesGridCell& cell = applesGrid.cells[cellX][cellY];
-
-				bool isAppleInCell = false;
-				for (ApplesGridCell* oldCell : apple.gridCells)
-				{
-					if (oldCell == &cell)
-					{
-						isAppleInCell = true;
-						break;
-					}
-				}
-
-				if (!isAppleInCell)
-				{
-					cell.apples[cell.numApplesInCell++] = &apple;
-					newCells[numNewCells++] = &cell;
-					assert(cell.numApplesInCell <= MAX_APPLES_IN_CELL);
-				}
-			}
-		}
-
-		// Remove apple from old cells
-		for (int i = 0; i < apple.numGridCells; ++i)
-		{
-			ApplesGridCell* cell = apple.gridCells[i];
-			bool needRemoveFromCell = true;
-			for (int j = 0; j < numNewCells; ++j)
-			{
-				if (cell == newCells[j])
-				{
-					needRemoveFromCell = false;
-					break;
-				}
-			}
-
-			if (needRemoveFromCell)
-			{
-				for (int j = 0; j < cell->numApplesInCell; ++j)
-				{
-					if (cell->apples[i] == &apple)
-					{
-						cell->apples[i] = cell->apples[cell->numApplesInCell - 1];
-						cell->numApplesInCell--;
-						break;
-					}
-				}
-				apple.gridCells[i] = apple.gridCells[apple.numGridCells - 1];
-				--apple.numGridCells;
+				applesGrid.cells[{cellX, cellY}].insert(&apple);
+				applesGrid.appleCells.insert({ &apple, {cellX, cellY} });
 			}
 		}
 	}
 
 	void RemoveAppleFromGrid(ApplesGrid& applesGrid, Apple& apple)
 	{
-		for (int i = 0; i < apple.numGridCells; ++i)
+		auto range = applesGrid.appleCells.equal_range(&apple);
+		for (auto it = range.first; it != range.second; ++it)
 		{
-			ApplesGridCell* cell = apple.gridCells[i];
-			for (int j = 0; j < cell->numApplesInCell; ++j)
-			{
-				if (cell->apples[i] == &apple)
-				{
-					cell->apples[i] = cell->apples[cell->numApplesInCell - 1];
-					cell->numApplesInCell--;
-					break;
-				}
-			}
-			apple.gridCells[i] = nullptr;
+			applesGrid.cells[it->second].erase(&apple);
 		}
-		apple.numGridCells = 0;
+		applesGrid.appleCells.erase(range.first, range.second);
 	}
 
-	bool FindPlayerCollisionWithApples(const Vector2D& playerPosition, const ApplesGrid& grid, Apple** result, int& numFoundApples)
+	bool FindPlayerCollisionWithApples(const Vector2Df& playerPosition, const ApplesGrid& grid, ApplesSet& result)
 	{
-		Vector2D playerCornerTL = playerPosition + Vector2D{ -PLAYER_SIZE / 2, -PLAYER_SIZE / 2 };
-		Vector2D playerCornerBR = playerPosition + Vector2D{ PLAYER_SIZE / 2, PLAYER_SIZE / 2 };
+		Vector2Df playerCornerTL = playerPosition + Vector2Df{ -PLAYER_SIZE / 2, -PLAYER_SIZE / 2 };
+		Vector2Df playerCornerBR = playerPosition + Vector2Df{ PLAYER_SIZE / 2, PLAYER_SIZE / 2 };
 
 		const float cellSizeX = (float)SCREEN_WIDTH / APPLES_GRID_CELLS_HORIZONTAL;
 		const float cellSizeY = (float)SCREEN_WIDTH / APPLES_GRID_CELLS_VERTICAL;
@@ -166,29 +93,27 @@ namespace ApplesGame
 		int minCellY = std::max((int)(playerCornerTL.y / cellSizeY), 0);
 		int maxCellY = std::min((int)(playerCornerBR.y / cellSizeY), (int)APPLES_GRID_CELLS_VERTICAL - 1);
 
-		numFoundApples = 0;
 		for (int cellX = minCellX; cellX <= maxCellX; ++cellX)
 		{
 			for (int cellY = minCellY; cellY <= maxCellY; ++cellY)
 			{
-				for (int i = 0; i < grid.cells[cellX][cellY].numApplesInCell; ++i)
+				const auto it = grid.cells.find({ cellX, cellY });
+				if (it == grid.cells.cend())
 				{
-					Apple* apple = grid.cells[cellX][cellY].apples[i];
-					if (!apple->isEaten)
+					continue;
+				}
+
+				for (Apple* apple : it->second)
+				{
+					Vector2Df distance = playerPosition - apple->position;
+					if (GetVectorLength(distance) < (PLAYER_SIZE + APPLE_SIZE) / 2)
 					{
-						float dx = playerPosition.x - apple->position.x;
-						float dy = playerPosition.y - apple->position.y;
-						float distance = sqrt(dx * dx + dy * dy);
-						if (distance < (PLAYER_SIZE + APPLE_SIZE) / 2)
-						{
-							result[numFoundApples] = apple;
-							++numFoundApples;
-						}
+						result.insert(apple);
 					}
 				}
 			}
 		}
 
-		return numFoundApples > 0;
+		return result.size() > 0;
 	}
 }

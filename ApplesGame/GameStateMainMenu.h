@@ -14,6 +14,7 @@ namespace ApplesGame
 		MenuItem optionsItem;
 		MenuItem optionsInfiniteApplesItem;
 		MenuItem optionsWithAccelerationItem;
+		MenuItem recordsItem;
 		MenuItem exitGameItem;
 		MenuItem yesItem;
 		MenuItem noItem;

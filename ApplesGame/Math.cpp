@@ -3,27 +3,45 @@
 namespace ApplesGame
 {
 
-	Vector2D operator+(const Vector2D& lhs, const Vector2D& rhs)
+	Vector2Df operator+(const Vector2Df& lhs, const Vector2Df& rhs)
 	{
-		Vector2D result;
+		Vector2Df result;
 		result.x = lhs.x + rhs.x;
 		result.y = lhs.y + rhs.y;
 		return result;
 	}
 
-	sf::Vector2f OurVectorToSf(const Vector2D& v)
+	ApplesGame::Vector2Df operator-(const Vector2Df& lhs, const Vector2Df& rhs)
+	{
+		Vector2Df result;
+		result.x = lhs.x - rhs.x;
+		result.y = lhs.y - rhs.y;
+		return result;
+	}
+
+	float GetVectorLength(const Vector2Df& vector)
+	{
+		return sqrtf(vector.x * vector.x + vector.y * vector.y);
+	}
+
+	bool operator==(const Vector2Di& lhs, const Vector2Di& rhs)
+	{
+		return lhs.x == rhs.x && lhs.y == rhs.y;
+	}
+
+	sf::Vector2f OurVectorToSf(const Vector2Df& v)
 	{
 		return sf::Vector2f(v.x, v.y);
 	}
 
-	sf::Vector2f GetSpriteScale(const sf::Sprite& sprite, const Vector2D& desiredSize)
+	sf::Vector2f GetSpriteScale(const sf::Sprite& sprite, const Vector2Df& desiredSize)
 	{
 		const sf::Vector2u textureSize = sprite.getTexture()->getSize();
 		const sf::Vector2f spriteScale = { desiredSize.x / textureSize.x, desiredSize.y / textureSize.y };
 		return spriteScale;
 	}
 
-	sf::Vector2f GetItemOrigin(const sf::Sprite& sprite, const Vector2D& relativePosition)
+	sf::Vector2f GetItemOrigin(const sf::Sprite& sprite, const Vector2Df& relativePosition)
 	{
 		const sf::Vector2u textureSize = sprite.getTexture()->getSize();
 		return { relativePosition.x * textureSize.x, relativePosition.y * textureSize.y };
@@ -97,7 +115,7 @@ namespace ApplesGame
 		}
 	}
 
-	bool IsPointInRect(Vector2D point, Vector2D rectTL, Vector2D rectBR)
+	bool IsPointInRect(Vector2Df point, Vector2Df rectTL, Vector2Df rectBR)
 	{
 		if (point.x < rectTL.x || point.x > rectBR.x)
 		{
