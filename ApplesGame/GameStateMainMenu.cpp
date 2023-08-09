@@ -17,6 +17,7 @@ namespace ApplesGame
 		data.menu.rootItem.childrenSpacing = 10.f;
 		data.menu.rootItem.children.push_back(&data.startGameItem);
 		data.menu.rootItem.children.push_back(&data.optionsItem);
+		data.menu.rootItem.children.push_back(&data.recordsItem);
 		data.menu.rootItem.children.push_back(&data.exitGameItem);
 
 		data.startGameItem.text.setString("Start Game");
@@ -43,6 +44,10 @@ namespace ApplesGame
 		data.optionsWithAccelerationItem.text.setString("With Acceleration: On/Off");
 		data.optionsWithAccelerationItem.text.setFont(data.font);
 		data.optionsWithAccelerationItem.text.setCharacterSize(24);
+
+		data.recordsItem.text.setString("Records");
+		data.recordsItem.text.setFont(data.font);
+		data.recordsItem.text.setCharacterSize(24);
 
 		data.exitGameItem.text.setString("Exit Game");
 		data.exitGameItem.text.setFont(data.font);
@@ -104,6 +109,10 @@ namespace ApplesGame
 				else if (data.menu.selectedItem == &data.optionsWithAccelerationItem)
 				{
 					game.options = (GameOptions)((std::uint8_t)game.options ^ (std::uint8_t)GameOptions::WithAcceleration);
+				}
+				else if (data.menu.selectedItem == &data.recordsItem)
+				{
+					PushGameState(game, GameStateType::Records, true);
 				}
 				else if (data.menu.selectedItem == &data.exitGameItem)
 				{

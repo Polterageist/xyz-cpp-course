@@ -1,6 +1,7 @@
 #include "GameStatePlaying.h"
 #include "Game.h"
 #include <assert.h>
+#include <sstream>
 
 namespace ApplesGame
 {
@@ -97,6 +98,7 @@ namespace ApplesGame
 
 				// Increase eaten apples counter
 				data.numEatenApples++;
+
 				// Increase player speed
 				if ((std::uint8_t)game.options & (std::uint8_t)GameOptions::WithAcceleration)
 				{
@@ -115,6 +117,10 @@ namespace ApplesGame
 
 			PushGameState(game, GameStateType::GameOver, false);
 		}
+
+		std::stringstream scoresString;
+		scoresString << "Apples eaten: " << data.numEatenApples;
+		data.scoreText.setString(scoresString.str());
 	}
 
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window)

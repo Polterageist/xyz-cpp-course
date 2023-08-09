@@ -5,6 +5,7 @@
 #include "GameStateGameOver.h"
 #include "GameStateExitDialog.h"
 #include "GameStateMainMenu.h"
+#include "GameStateRecords.h"
 
 namespace ApplesGame
 {
@@ -169,8 +170,14 @@ namespace ApplesGame
 			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
 			break;
 		}
+		case GameStateType::Records:
+		{
+			state.data = new GameStateRecordsData();
+			InitGameStateRecords(*(GameStateRecordsData*)state.data, game);
+			break;
+		}
 		default:
-			assert(false); // We want to know if we forgot to implement new game statee
+			assert(false); // We want to know if we forgot to implement new game state
 			break;
 		}
 	}
@@ -203,8 +210,14 @@ namespace ApplesGame
 			delete (GameStateExitDialogData*)state.data;
 			break;
 		}
+		case GameStateType::Records:
+		{
+			ShutdownGameStateRecords(*(GameStateRecordsData*)state.data, game);
+			delete (GameStateRecordsData*)state.data;
+			break;
+		}
 		default:
-			assert(false); // We want to know if we forgot to implement new game statee
+			assert(false); // We want to know if we forgot to implement new game state
 			break;
 		}
 
@@ -235,8 +248,13 @@ namespace ApplesGame
 			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
 			break;
 		}
+		case GameStateType::Records:
+		{
+			HandleGameStateRecordsWindowEvent(*(GameStateRecordsData*)state.data, game, event);
+			break;
+		}
 		default:
-			assert(false); // We want to know if we forgot to implement new game statee
+			assert(false); // We want to know if we forgot to implement new game state
 			break;
 		}
 	}
@@ -265,8 +283,13 @@ namespace ApplesGame
 			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, timeDelta);
 			break;
 		}
+		case GameStateType::Records:
+		{
+			UpdateGameStateRecords(*(GameStateRecordsData*)state.data, game, timeDelta);
+			break;
+		}
 		default:
-			assert(false); // We want to know if we forgot to implement new game statee
+			assert(false); // We want to know if we forgot to implement new game state
 			break;
 		}
 	}
@@ -295,8 +318,13 @@ namespace ApplesGame
 			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
 			break;
 		}
+		case GameStateType::Records:
+		{
+			DrawGameStateRecords(*(GameStateRecordsData*)state.data, game, window);
+			break;
+		}
 		default:
-			assert(false); // We want to know if we forgot to implement new game statee
+			assert(false); // We want to know if we forgot to implement new game state
 			break;
 		}
 	}
