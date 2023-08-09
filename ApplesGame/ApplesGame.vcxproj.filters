@@ -28,7 +28,7 @@
     <ClCompile Include="GameStateGameOver.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="GameStateExitDialog.cpp">
+    <ClCompile Include="GameStatePauseMenu.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="GameStateMainMenu.cpp">
@@ -63,7 +63,7 @@
     <ClInclude Include="GameStateGameOver.h">
       <Filter>Sources</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateExitDialog.h">
+    <ClInclude Include="GameStatePauseMenu.h">
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="GameStateMainMenu.h">

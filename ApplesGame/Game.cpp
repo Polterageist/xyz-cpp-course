@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "GameStatePlaying.h"
 #include "GameStateGameOver.h"
-#include "GameStateExitDialog.h"
+#include "GameStatePauseMenu.h"
 #include "GameStateMainMenu.h"
 #include "GameStateRecords.h"
 
@@ -166,8 +166,8 @@ namespace ApplesGame
 		}
 		case GameStateType::ExitDialog:
 		{
-			state.data = new GameStateExitDialogData();
-			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
+			state.data = new GameStatePauseMenuData();
+			InitGameStatePauseMenu(*(GameStatePauseMenuData*)state.data, game);
 			break;
 		}
 		case GameStateType::Records:
@@ -206,8 +206,8 @@ namespace ApplesGame
 		}
 		case GameStateType::ExitDialog:
 		{
-			ShutdownGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
-			delete (GameStateExitDialogData*)state.data;
+			ShutdownGameStatePauseMenu(*(GameStatePauseMenuData*)state.data, game);
+			delete (GameStatePauseMenuData*)state.data;
 			break;
 		}
 		case GameStateType::Records:
@@ -245,7 +245,7 @@ namespace ApplesGame
 		}
 		case GameStateType::ExitDialog:
 		{
-			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
+			HandleGameStatePauseMenuWindowEvent(*(GameStatePauseMenuData*)state.data, game, event);
 			break;
 		}
 		case GameStateType::Records:
@@ -280,7 +280,7 @@ namespace ApplesGame
 		}
 		case GameStateType::ExitDialog:
 		{
-			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, timeDelta);
+			UpdateGameStatePauseMenu(*(GameStatePauseMenuData*)state.data, game, timeDelta);
 			break;
 		}
 		case GameStateType::Records:
@@ -315,7 +315,7 @@ namespace ApplesGame
 		}
 		case GameStateType::ExitDialog:
 		{
-			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
+			DrawGameStatePauseMenu(*(GameStatePauseMenuData*)state.data, game, window);
 			break;
 		}
 		case GameStateType::Records:

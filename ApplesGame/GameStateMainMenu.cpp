@@ -157,7 +157,7 @@ namespace ApplesGame
 
 	void DrawGameStateMainMenu(GameStateMainMenuData& data, Game& game, sf::RenderWindow& window)
 	{
-		sf::Vector2f viewSize = (sf::Vector2f)window.getSize();
+		sf::Vector2f viewSize = (sf::Vector2f)window.getView().getSize();
 
 		sf::Text* hintText = &GetCurrentMenuContext(data.menu)->hintText;
 		hintText->setOrigin(GetItemOrigin(*hintText, { 0.5f, 0.f }));
