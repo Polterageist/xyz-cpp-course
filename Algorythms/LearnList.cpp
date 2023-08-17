@@ -1,11 +1,11 @@
 #include "LearnList.h"
 #include <assert.h>
 #include <iostream>
-#include <../../14.32.31326/include/list>
+#include <list>
 #include <vector>
-#include <../../14.32.31326/include/map>
-#include <../../14.32.31326/include/queue>
-#include <../../14.32.31326/include/set>
+#include <map>
+#include <queue>
+#include <set>
 
 struct LinkedListNode
 {
