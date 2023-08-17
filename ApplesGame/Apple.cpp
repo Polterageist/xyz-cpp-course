@@ -21,7 +21,7 @@ namespace ApplesGame
 			return;
 		}
 			
-		apple.sprite.setPosition(OurVectorToSf(apple.position));
+		apple.sprite.setPosition(Convert<sf::Vector2f>(apple.position));
 		window.draw(apple.sprite);
 	}
 

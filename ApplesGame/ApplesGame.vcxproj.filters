@@ -75,5 +75,6 @@
     <ClInclude Include="GameStateRecords.h">
       <Filter>Sources</Filter>
     </ClInclude>
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@ namespace ApplesGame
 
 	void DrawPlayer(Player& player, sf::RenderWindow& window)
 	{
-		player.sprite.setPosition(OurVectorToSf(player.position));
+		player.sprite.setPosition(Convert<sf::Vector2f>(player.position));
 
 		const sf::Vector2f spriteScale = (GetSpriteScale(player.sprite, { PLAYER_SIZE, PLAYER_SIZE }));
 
