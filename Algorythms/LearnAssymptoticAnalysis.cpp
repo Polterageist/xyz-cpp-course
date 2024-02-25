@@ -38,6 +38,25 @@ int FindArrayItemIndex(int array[], int arraySize, int item, struct Stats& stats
 	return -1;
 }
 
+template <class T>
+T FindArrayItemIndex(T array[], int arraySize, T item, struct Stats& stats)
+{
+	InitStats(stats);
+	stats.dataLength = arraySize;
+	stats.memory = sizeof(int);
+	for (int i = 0; i < arraySize; ++i)
+	{
+		++stats.steps;
+		if (array[i] == item)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+
 // Time complexity: O(n), Memory complexity: O(1)
 void BubbleSort(int array[], int arraySize, Stats& stats)
 {
