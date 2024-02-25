@@ -1,4 +1,4 @@
-#include "GameStateMainMenu.h"
+﻿#include "GameStateMainMenu.h"
 #include "Game.h"
 #include <assert.h>
 
@@ -8,10 +8,17 @@ namespace ApplesGame
 	{
 		assert(data.font.loadFromFile(RESOURCES_PATH + "Fonts/Roboto-Regular.ttf"));
 
-		data.menu.rootItem.hintText.setString("Apples Game");
-		data.menu.rootItem.hintText.setFont(data.font);
-		data.menu.rootItem.hintText.setCharacterSize(48);
-		data.menu.rootItem.hintText.setFillColor(sf::Color::Red);
+		auto setTextParameters = [&data](sf::Text& itemText, const std::string& title, int fontSize, sf::Color color = sf::Color::Transparent) {
+			itemText.setString(title);
+			itemText.setFont(data.font);
+			itemText.setCharacterSize(fontSize);
+			if (color != sf::Color::Transparent) // цвет по умолчанию, то есть не заданный вручную
+			{
+				itemText.setFillColor(color);
+			}
+		};
+
+		setTextParameters(data.menu.rootItem.hintText, "Apples Game", 48, sf::Color::Red);
 		data.menu.rootItem.childrenOrientation = Orientation::Vertical;
 		data.menu.rootItem.childrenAlignment = Alignment::Middle;
 		data.menu.rootItem.childrenSpacing = 10.f;
@@ -20,55 +27,32 @@ namespace ApplesGame
 		data.menu.rootItem.children.push_back(&data.recordsItem);
 		data.menu.rootItem.children.push_back(&data.exitGameItem);
 
-		data.startGameItem.text.setString("Start Game");
-		data.startGameItem.text.setFont(data.font);
-		data.startGameItem.text.setCharacterSize(24);
-		
-		data.optionsItem.text.setString("Options");
-		data.optionsItem.text.setFont(data.font);
-		data.optionsItem.text.setCharacterSize(24);
-		data.optionsItem.hintText.setString("Options");
-		data.optionsItem.hintText.setFont(data.font);
-		data.optionsItem.hintText.setCharacterSize(48);
-		data.optionsItem.hintText.setFillColor(sf::Color::Red);
+		setTextParameters(data.startGameItem.text, "Start Game", 24);
+
+		// Options + внутреннее меню
+		setTextParameters(data.optionsItem.text, "Options", 24);
+		setTextParameters(data.optionsItem.hintText, "Options", 48, sf::Color::Red);
 		data.optionsItem.childrenOrientation = Orientation::Vertical;
 		data.optionsItem.childrenAlignment = Alignment::Middle;
 		data.optionsItem.childrenSpacing = 10.f;
 		data.optionsItem.children.push_back(&data.optionsInfiniteApplesItem);
 		data.optionsItem.children.push_back(&data.optionsWithAccelerationItem);
 
-		data.optionsInfiniteApplesItem.text.setString("Infinite Apples: On/Off");
-		data.optionsInfiniteApplesItem.text.setFont(data.font);
-		data.optionsInfiniteApplesItem.text.setCharacterSize(24);
+		setTextParameters(data.optionsInfiniteApplesItem.text, "Infinite Apples: On/Off", 24);
+		setTextParameters(data.optionsWithAccelerationItem.text, "With Acceleration: On/Off", 24);
+		setTextParameters(data.recordsItem.text, "Records", 24);
 
-		data.optionsWithAccelerationItem.text.setString("With Acceleration: On/Off");
-		data.optionsWithAccelerationItem.text.setFont(data.font);
-		data.optionsWithAccelerationItem.text.setCharacterSize(24);
-
-		data.recordsItem.text.setString("Records");
-		data.recordsItem.text.setFont(data.font);
-		data.recordsItem.text.setCharacterSize(24);
-
-		data.exitGameItem.text.setString("Exit Game");
-		data.exitGameItem.text.setFont(data.font);
-		data.exitGameItem.text.setCharacterSize(24);
-		data.exitGameItem.hintText.setString("Are you sure?");
-		data.exitGameItem.hintText.setFont(data.font);
-		data.exitGameItem.hintText.setCharacterSize(48);
-		data.exitGameItem.hintText.setFillColor(sf::Color::Red);
+		// Exit game + внутреннее меню
+		setTextParameters(data.exitGameItem.text, "Exit Game", 24);
+		setTextParameters(data.exitGameItem.hintText, "Are you sure?", 48, sf::Color::Red);
 		data.exitGameItem.childrenOrientation = Orientation::Horizontal;
 		data.exitGameItem.childrenAlignment = Alignment::Middle;
 		data.exitGameItem.childrenSpacing = 10.f;
 		data.exitGameItem.children.push_back(&data.yesItem);
 		data.exitGameItem.children.push_back(&data.noItem);
 
-		data.yesItem.text.setString("Yes");
-		data.yesItem.text.setFont(data.font);
-		data.yesItem.text.setCharacterSize(24);
-
-		data.noItem.text.setString("No");
-		data.noItem.text.setFont(data.font);
-		data.noItem.text.setCharacterSize(24);
+		setTextParameters(data.yesItem.text, "Yes", 24);
+		setTextParameters(data.noItem.text, "No", 24);
 
 		InitMenuItem(data.menu.rootItem);
 		SelectMenuItem(data.menu, &data.startGameItem);
